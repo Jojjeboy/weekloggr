@@ -9,24 +9,48 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <style>
-    ul.navbar {
+    /* You can add global styles to this file, and also import other style files */
+    :host {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-size: 14px;
+        color: #333;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    .navbar2 {
+        display: flex;
         overflow: hidden;
         background-color: #333;
         position: fixed;
-        bottom: 0;
+        bottom: 0px;
         left: 0;
         width: 100%;
         padding: 0;
         margin-bottom: 0;
         height: 42px;
+        color: white;
+        align-items: baseline;
     }
 
-    ul.navbar li {
-        display: inline-block;
+    .navbar2>div {
+        margin: 0 10px;
+        padding: 0 6px;
+        font-size: 18px;
+        line-height: 20px;
+        width: 95%
     }
 
-    ul.navbar li a {
-        float: left;
+    .navbar2 a {
         display: block;
         color: #f2f2f2;
         text-align: center;
@@ -35,12 +59,12 @@
         font-size: 17px;
     }
 
-    ul.navbar li a:hover {
+    .navbar2 a:hover {
         background: green;
 
     }
 
-    ul.navbar li a.active {
+    .navbar2 a.active {
         background-color: #4caf50;
         color: white;
     }
@@ -49,37 +73,53 @@
         padding: 16px;
         margin-bottom: 30px;
     }
+
+    input[type="text"] {
+ 
+        width: 100%;
+        position: relative;
+        border-radius: 2px;
+        border: 1px solid #fafafa;
+        height: 25px;
+        top: 5px;
+    }
 </style>
 
 <body>
-    <ul class="navbar">
-        <li class="nav-item">
-            <a class="nav-link" href="/">Start</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/settings">Settings</a>
-        </li>
-        <li>
-            <input type="text" name="weeklog" id="weekloginput" />
-        </li>
-    </ul>
+
+    <div class="navbar2">
+        <div class="input"> <input type="text" name="weeklog" id="weekloginput" /></div>
+    </div>
+
+
 
     <div class="main">
         <h1>Bottom Navigation Bar</h1>
         <p>Some text some text some text.</p>
-        <ul class="weeklogs">
-            <?php 
-            foreach($weeklogs as $row) { 
-                echo '<li>';
-                echo $row['text']; 
-                echo '</li>'; 
+
+        <?php
+        $weeknr = 0;
+        $first = true;
+        foreach ($weeklogs as $row) {
+            if ($weeknr != $row['weeknr']) {
+                if ($first == false) {
+                    echo '</ul>';
+                }
+                echo '<ul>';
+                echo "<h3>Vecka " . $row['weeknr'] . "</h3>";
+                $weeknr = $row['weeknr'];
+                $first = false;
             }
-            ?>   
+            echo '<li>';
+            echo $row['text'];
+            echo '</li>';
+        }
+        ?>
         </ul>
     </div>
     <?php
     echo "<pre>";
-    print_r($weeklogs);
+    //print_r($weeklogs);
     ?>
 
 </body>
