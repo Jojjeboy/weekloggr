@@ -71,7 +71,11 @@
 
     .main {
         padding: 16px;
-        margin-bottom: 30px;
+        width: 80%;
+        
+    }
+    .main ul {
+        background: #fafafa;
     }
 
     input[type="text"] {
@@ -88,14 +92,15 @@
 <body>
 
     <div class="navbar2">
-        <div class="input"> <input type="text" name="weeklog" id="weekloginput" /></div>
+        <form method="POST" name="addweeklog" action="/weekloggr/">
+            <input type="text" name="weeklog" id="weekloginput" />
+            <button type="submit">Skicka</button>
+        </form>
     </div>
 
 
 
-    <div class="main">
-        <h1>Bottom Navigation Bar</h1>
-        <p>Some text some text some text.</p>
+    <div class="main" id="main">  
 
         <?php
         $weeknr = 0;
@@ -121,7 +126,7 @@
     echo "<pre>";
     //print_r($weeklogs);
     ?>
-
+<script src="http://localhost/weekloggr/umbrellajs.js"></script>
+<script src="http://localhost/weekloggr/weeklog.js"></script>
 </body>
-
 </html>
