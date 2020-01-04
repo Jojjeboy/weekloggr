@@ -18,10 +18,27 @@
 
 <body>
     <div class="container-fluid">
-        <div class="jumbotron mt-3">
+        <div class="mt-1">
             <h1>Bottom Navbar example</h1>
-            <p class="lead">This example is a quick exercise to illustrate how the bottom navbar works.</p>
-            <a class="btn btn-lg btn-primary" href="/docs/4.4/components/navbar/" role="button">View navbar docs &raquo;</a>
+            <?php
+        $weeknr = 0;
+        $first = true;
+        foreach ($weeklogs as $row) {
+            if ($weeknr != $row['weeknr']) {
+                if ($first == false) {
+                    echo '</div></ul>';
+                }
+                echo '<div class="card m-3">';
+                echo '<ul class="mb-3 list-group list-group-flush">';
+                echo '<h6 class="m-2 ml-3">Vecka ' . $row['weeknr'] . '</h6>';
+                $weeknr = $row['weeknr'];
+                $first = false;
+            }
+            echo '<li class="list-group-item">';
+            echo $row['text'];
+            echo '</li>';
+        }
+        ?>
         </div>
     </div>
     <nav class="navbar fixed-bottom navbar-expand navbar-dark bg-dark">
@@ -39,9 +56,11 @@
                     </div>
                 </li>
             </ul>
-            <form class="form-block">
-                <input class="form-control" type="text" placeholder="Search">
+            <form method="POST" name="addweeklog" action="/weekloggr/">
+                <input class="form-control" name="weeklog" type="text" placeholder="Log work done">
+                <button type="submit" class="d-none">Skicka</button>
             </form>
+        </form>
         </div>
     </nav>
     <!--
