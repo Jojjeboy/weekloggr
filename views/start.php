@@ -1,132 +1,79 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
     <title>Weekloggr</title>
-    <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="http://localhost/weekloggr/bootstrap.min.css">
+    <link rel="stylesheet" href="http://localhost/weekloggr/style.css">
+
+    <meta name="theme-color" content="#563d7c">
+
 </head>
-<style>
-    /* You can add global styles to this file, and also import other style files */
-    :host {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-        font-size: 14px;
-        color: #333;
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-
-    .navbar2 {
-        display: flex;
-        overflow: hidden;
-        background-color: #333;
-        position: fixed;
-        bottom: 0px;
-        left: 0;
-        width: 100%;
-        padding: 0;
-        margin-bottom: 0;
-        height: 42px;
-        color: white;
-        align-items: baseline;
-    }
-
-    .navbar2>div {
-        margin: 0 10px;
-        padding: 0 6px;
-        font-size: 18px;
-        line-height: 20px;
-        width: 95%
-    }
-
-    .navbar2 a {
-        display: block;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
-
-    .navbar2 a:hover {
-        background: green;
-
-    }
-
-    .navbar2 a.active {
-        background-color: #4caf50;
-        color: white;
-    }
-
-    .main {
-        padding: 16px;
-        width: 80%;
-        
-    }
-    .main ul {
-        background: #fafafa;
-    }
-
-    input[type="text"] {
- 
-        width: 100%;
-        position: relative;
-        border-radius: 2px;
-        border: 1px solid #fafafa;
-        height: 25px;
-        top: 5px;
-    }
-</style>
 
 <body>
-
-    <div class="navbar2">
-        <form method="POST" name="addweeklog" action="/weekloggr/">
-            <input type="text" name="weeklog" id="weekloginput" />
-            <button type="submit">Skicka</button>
-        </form>
+    <div class="container-fluid">
+        <div class="jumbotron mt-3">
+            <h1>Bottom Navbar example</h1>
+            <p class="lead">This example is a quick exercise to illustrate how the bottom navbar works.</p>
+            <a class="btn btn-lg btn-primary" href="/docs/4.4/components/navbar/" role="button">View navbar docs &raquo;</a>
+        </div>
     </div>
+    <nav class="navbar fixed-bottom navbar-expand navbar-dark bg-dark">
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample02">
+            <ul class="navbar-nav">
+                <li class="nav-item dropup">
+                    <a class="nav-link navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Weekloggr</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown10">
+                        <a class="dropdown-item" href="#">Settings</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-block">
+                <input class="form-control" type="text" placeholder="Search">
+            </form>
+        </div>
+    </nav>
+    <!--
+    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropup">
+                    <a class="nav-link navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Weekloggr</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown10">
+                        <a class="dropdown-item" href="#">Settings</a>
+                    </div>
+                </li>
+                <li>
+                    <form class="form-inline mt-2 mt-md-0 col-5">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </li>
+            </ul>
+
+        </div>
+    </nav>-->
 
 
+    <script src="http://localhost/weekloggr/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="http://localhost/weekloggr/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="http://localhost/weekloggr/bootstrap.min.js"></script>
 
-    <div class="main" id="main">  
-
-        <?php
-        $weeknr = 0;
-        $first = true;
-        foreach ($weeklogs as $row) {
-            if ($weeknr != $row['weeknr']) {
-                if ($first == false) {
-                    echo '</ul>';
-                }
-                echo '<ul>';
-                echo "<h3>Vecka " . $row['weeknr'] . "</h3>";
-                $weeknr = $row['weeknr'];
-                $first = false;
-            }
-            echo '<li>';
-            echo $row['text'];
-            echo '</li>';
-        }
-        ?>
-        </ul>
-    </div>
-    <?php
-    echo "<pre>";
-    //print_r($weeklogs);
-    ?>
-<script src="http://localhost/weekloggr/umbrellajs.js"></script>
-<script src="http://localhost/weekloggr/weeklog.js"></script>
+    <script src="http://localhost/weekloggr/weeklog.js"></script>
 </body>
+
 </html>
