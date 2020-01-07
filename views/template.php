@@ -44,7 +44,7 @@
                 <a class="nav-link navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                     <div class="dropdown-menu" aria-labelledby="dropdown10">
                         <a class="dropdown-item small" href="<?php echo $base_url .'/delete/'. $row['id']; ?>">Ta bort</a>
-                        <a class="dropdown-item small" href="<?php echo $base_url .'/archive/'. $row['id'] . '/' . $newStatus; ?>">Arkivera</a>
+                        <a class="dropdown-item small" href="<?php echo $base_url .'/setstatus/'. $row['id'] . '/' . $newStatus; ?>"><?php echo $newStatus == 0 ? 'Arkivera' : 'Avarkivera';?></a>
                     </div>
                 </span>
             <?php
