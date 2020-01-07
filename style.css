@@ -27,9 +27,9 @@
 .card li.show-0{
   display: none;
 }
-.card li.show-0.showAll{
+.card li.show-0.showAnyway{
   display: block;
-  color: #333;
+  color: #9a9a9a;
 }
 
 h6.sameAsCurrent{

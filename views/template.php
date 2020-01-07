@@ -31,7 +31,7 @@
                 echo '<div class="card m-3">';
                 echo '<ul class="mb-3 list-group list-group-flush">';
                 $currWeekClass = $currentWeekNr == $row['weeknr'] ? ' sameAsCurrent' : '';
-                echo '<h6 class="m-2 ml-3'. $currWeekClass .'">Vecka ' . $row['weeknr'] . '</h6>';
+                echo '<h6 class="m-2 ml-3'. $currWeekClass .'">Vecka ' . $row['weeknr'] . ' <button type="button" class="btn-small btn-link d-none showHidden" onclick="toggleShown(this)">Visa gömda</button></h6>';
                 $weeknr = $row['weeknr'];
                 $first = false;
             }
