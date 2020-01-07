@@ -30,7 +30,8 @@
                 }
                 echo '<div class="card m-3">';
                 echo '<ul class="mb-3 list-group list-group-flush">';
-                echo '<h6 class="m-2 ml-3">Vecka ' . $row['weeknr'] . '</h6>';
+                $currWeekClass = $currentWeekNr == $row['weeknr'] ? ' sameAsCurrent' : '';
+                echo '<h6 class="m-2 ml-3'. $currWeekClass .'">Vecka ' . $row['weeknr'] . '</h6>';
                 $weeknr = $row['weeknr'];
                 $first = false;
             }
@@ -56,7 +57,7 @@
                     </div>
                 </li>
             </ul>
-            <form method="POST" name="addweeklog" action="<?php echo $base_url;?>addlog">
+            <form method="POST" name="addweeklog" action="<?php echo $base_url;?>/addlog">
                 <input class="form-control" name="weeklog" type="text" placeholder="Log work done">
                 <button type="submit" class="d-none">Skicka</button>
             </form>

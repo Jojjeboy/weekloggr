@@ -17,6 +17,10 @@
   padding-bottom: 60px;
 }
 
+h6.sameAsCurrent{
+    color: #0ca90c;
+}
+
 form {
     width: 100%;
 }

@@ -4,10 +4,16 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 Flight::route('/', function () {
-    $db = Flight::setup(true);
+    $db = Flight::setup();
 
     $x = $db->query("SELECT * FROM `weekloggr`")->fetchAll(PDO::FETCH_ASSOC);
-    Flight::render('start.php', array('weeklogs' => $x, 'base_url' => Flight::get('base_url')));
+    Flight::render('start.php', 
+        array(
+            'weeklogs' => $x, 
+            'base_url' => Flight::get('base_url'),
+            'currentWeekNr' => Flight::getWeekNr()
+        )
+    );
 });
 
 Flight::route('/addlog', function () {
@@ -32,8 +38,8 @@ Flight::route('/delete/@id', function ($id) {
 });
 
 Flight::map('setup', function () {
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
-    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
+    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
 
     return Flight::db();
 });
