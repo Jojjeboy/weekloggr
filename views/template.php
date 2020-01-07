@@ -35,8 +35,19 @@
                 $weeknr = $row['weeknr'];
                 $first = false;
             }
-            echo '<li class="list-group-item">';
-            echo $row['text'] . '<span> <a href="'. $base_url .'delete/'. $row['id'] .'">x</a></span>';
+            $showArchived = $row['is_visible'];
+            $newStatus = $row['is_visible'] == 1 ? 0 : 1;
+            echo '<li class="list-group-item show-'. $showArchived .'">';
+            echo $row['text'];
+            ?>
+            <span class="dropup">
+                <a class="nav-link navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown10">
+                        <a class="dropdown-item small" href="<?php echo $base_url .'/delete/'. $row['id']; ?>">Ta bort</a>
+                        <a class="dropdown-item small" href="<?php echo $base_url .'/archive/'. $row['id'] . '/' . $newStatus; ?>">Arkivera</a>
+                    </div>
+                </span>
+            <?php
             echo '</li>';
         }
         ?>

@@ -17,8 +17,23 @@
   padding-bottom: 60px;
 }
 
+.card {
+  background: #fafafa;
+}
+.card li{
+  background: #f1f1f1;
+}
+
+.card li.show-0{
+  display: none;
+}
+.card li.show-0.showAll{
+  display: block;
+  color: #333;
+}
+
 h6.sameAsCurrent{
-    color: #0ca90c;
+  color: #0ca90c;
 }
 
 form {

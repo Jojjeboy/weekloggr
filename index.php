@@ -7,7 +7,7 @@ Flight::route('/', function () {
     $db = Flight::setup();
 
     $x = $db->query("SELECT * FROM `weekloggr`")->fetchAll(PDO::FETCH_ASSOC);
-    Flight::render('start.php', 
+    Flight::render('template.php', 
         array(
             'weeklogs' => $x, 
             'base_url' => Flight::get('base_url'),
@@ -37,9 +37,22 @@ Flight::route('/delete/@id', function ($id) {
     Flight::redirect('/');
 });
 
+Flight::route('/archive/@id/@newStatus', function ($id, $newStatus) {
+
+    $db = Flight::setup();
+
+    $sql = 'UPDATE weekloggr SET is_visible = :is_visible WHERE id = :id';
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id   ', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':is_visible', $newStatus, PDO::PARAM_INT);
+    $stmt->execute();
+
+    Flight::redirect('/');
+});
+
 Flight::map('setup', function () {
-    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
+    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
 
     return Flight::db();
 });
