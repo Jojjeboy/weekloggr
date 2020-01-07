@@ -9,8 +9,8 @@
 
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="http://localhost/weekloggr/bootstrap.min.css">
-    <link rel="stylesheet" href="http://localhost/weekloggr/style.css">
+    <link rel="stylesheet" href="<?php echo $base_url;?>/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo $base_url;?>/style.css">
 
     <meta name="theme-color" content="#563d7c">
 
@@ -19,7 +19,7 @@
 <body>
     <div class="container-fluid">
         <div class="mt-1">
-            <h1>Bottom Navbar example</h1>
+            <h1>Weekloggr</h1>
             <?php
         $weeknr = 0;
         $first = true;
@@ -35,7 +35,7 @@
                 $first = false;
             }
             echo '<li class="list-group-item">';
-            echo $row['text'];
+            echo $row['text'] . '<span> <a href="'. $base_url .'delete/'. $row['id'] .'">x</a></span>';
             echo '</li>';
         }
         ?>
@@ -56,43 +56,20 @@
                     </div>
                 </li>
             </ul>
-            <form method="POST" name="addweeklog" action="/weekloggr/">
+            <form method="POST" name="addweeklog" action="<?php echo $base_url;?>addlog">
                 <input class="form-control" name="weeklog" type="text" placeholder="Log work done">
                 <button type="submit" class="d-none">Skicka</button>
             </form>
         </form>
         </div>
     </nav>
-    <!--
-    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropup">
-                    <a class="nav-link navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Weekloggr</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown10">
-                        <a class="dropdown-item" href="#">Settings</a>
-                    </div>
-                </li>
-                <li>
-                    <form class="form-inline mt-2 mt-md-0 col-5">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                </li>
-            </ul>
-
-        </div>
-    </nav>-->
 
 
-    <script src="http://localhost/weekloggr/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="http://localhost/weekloggr/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="http://localhost/weekloggr/bootstrap.min.js"></script>
+    <script src="<?php echo $base_url;?>/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="<?php echo $base_url;?>/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="<?php echo $base_url;?>/bootstrap.min.js"></script>
 
-    <script src="http://localhost/weekloggr/weeklog.js"></script>
+    <script src="<?php echo $base_url;?>/weeklog.js"></script>
 </body>
 
 </html>

@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 
 --
 -- Tabellstruktur `weekloggr`
---
+-- 
 
 CREATE TABLE `weekloggr` (
   `id` int(11) NOT NULL,
