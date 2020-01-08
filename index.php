@@ -53,8 +53,8 @@ Flight::route('/setstatus/@id/@newStatus', function ($id, $newStatus) {
 });
 
 Flight::map('setup', function () {
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
-    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
+    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
 
     return Flight::db();
 });

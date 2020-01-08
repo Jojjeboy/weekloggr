@@ -8,14 +8,19 @@ for (var i = 0; i < allHiddenLi.length; ++i) {
 
 function toggleArchived(btn, status) {
     let allHiddenLi = btn.parentNode.parentNode.querySelectorAll('li.show-0');
-    for (var i = 0; i < allHiddenLi.length; ++i) {
-        addClass(allHiddenLi[i], 'showAnyway');
-    }
-    if(status == 1){
-        document.querySelector('button.showHidden').innerText = 'Göm arkiverade';
+    if(status === 1){
+        for (var i = 0; i < allHiddenLi.length; ++i) {
+            addClass(allHiddenLi[i], 'showAnyway');
+        }
+        btn.setAttribute('onclick', "toggleArchived(this, 0)");
+        btn.innerText = 'Göm arkiverade';
     }
     else {
-        document.querySelector('button.showHidden').innerText = 'Visa arkiverade';
+        for (var i = 0; i < allHiddenLi.length; ++i) {
+            removeClass(allHiddenLi[i], 'showAnyway');
+        }
+        btn.setAttribute('onclick', "toggleArchived(this, 1)");
+        btn.innerText = 'Visa arkiverade';
     }
 }
 
