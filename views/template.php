@@ -29,24 +29,27 @@
                         echo '</div></ul>';
                     }
                     echo '<div class="card m-3">';
-                    echo '<ul class="mb-3 list-group list-group-flush">';
+                    echo '<ul class="list-group list-group-flush">';
                     $currWeekClass = $currentWeekNr == $row['weeknr'] ? ' sameAsCurrent' : '';
-                    echo '<h6 class="m-2 ml-3' . $currWeekClass . '">Vecka ' . $row['weeknr'] . '</h6>';
-                    // echo ' <button type="button" class="btn btn-link d-none showHidden" onclick="toggleArchived(this, '. $row['is_visible'] .')">Visa arkiverade</button>';
+                    echo '<h6 class="m-2 ml-3' . $currWeekClass . '">'; ?>
+                    Vecka <?php echo $row['weeknr']?>
+                    </h6>
+                    <?php
                     $weeknr = $row['weeknr'];
                     $first = false;
                 } 
                 ?>
                 <li class="list-group-item">
-                <span class="dropup">
-                    <a class="navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown10">
-                        <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
-                        <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
-                    </div>
-                </span>
-                <span class="text-<?php echo $row['id']; ?>"> 
-                <?php echo $row['text']; ?></span>
+                    <span class="dropup">
+                        <a class="navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown10">
+                            <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
+                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
+                        </div>
+                    </span>
+                    <span class="text-<?php echo $row['id']; ?>"> 
+                        <?php echo $row['text']; ?>
+                    </span>
                 </li>
                 <?php 
             }

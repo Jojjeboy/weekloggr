@@ -18,10 +18,10 @@
 }
 
 .card {
-  background: #fafafa;
+    background: #f1f1f1;
 }
 .card li{
-  background: #f1f1f1;
+    background: #fafafa;
 }
 
 .card li.show-0{

@@ -4,7 +4,9 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 Flight::route('/', function () {
+    
     $db = Flight::setup();
+    //Flight::archiveold($db);
 
     $x = $db->query("SELECT * FROM `weekloggr`")->fetchAll(PDO::FETCH_ASSOC);
     Flight::render('template.php', 
@@ -18,7 +20,7 @@ Flight::route('/', function () {
 
 Flight::route('/addlog', function () {
     if (Flight::request()->method == 'POST') {
-        $db = Flight::setup(true);
+        $db = Flight::setup();
         $sql = "INSERT INTO weekloggr (text, weeknr) VALUES (?,?)";
         $db->prepare($sql)->execute([Flight::request()->data->weeklog, Flight::getWeekNr()]);
     }
@@ -37,25 +39,17 @@ Flight::route('/delete/@id', function ($id) {
     Flight::redirect('/');
 });
 
-Flight::route('/setstatus/@id/@newStatus', function ($id, $newStatus) {
-
-    $db = Flight::setup();
-
-    $sql = 'UPDATE weekloggr SET is_visible = :is_visible WHERE id = :id';
-
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':is_visible', $newStatus, PDO::PARAM_INT);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
+Flight::map('archiveold', function ($db) {
+    $sql = 'UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval 30 DAY';
     
-
-    Flight::redirect('/');
+    $stmt = $db->prepare($sql);
+    $archivedStatus = 0;
+    $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
+    $stmt->execute();
 });
 
 Flight::map('setup', function () {
-    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
     Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
-
     return Flight::db();
 });
 
