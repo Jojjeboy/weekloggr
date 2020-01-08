@@ -1,7 +1,6 @@
 window.scrollTo(0, document.body.scrollHeight);
 
 function copyToInput(btn, id){
-    console.log(btn);
     const txt = document.querySelector('.text-' + id).textContent.trim();
     document.querySelector('form input').setAttribute('value', txt);
 }
