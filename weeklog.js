@@ -6,11 +6,26 @@ for (var i = 0; i < allHiddenLi.length; ++i) {
     allHiddenLi[i].parentNode.firstElementChild.firstElementChild.classList.remove('d-none');
 }
 
-function toggleShown(btn) {
+function toggleArchived(btn, status) {
     let allHiddenLi = btn.parentNode.parentNode.querySelectorAll('li.show-0');
     for (var i = 0; i < allHiddenLi.length; ++i) {
         addClass(allHiddenLi[i], 'showAnyway');
     }
+    if(status == 0){
+        document.querySelector('button.showHidden').innerText = 'Göm arkiverade';
+    }
+    else {
+        document.querySelector('button.showHidden').innerText = 'Visa arkiverade';
+    }
+}
+
+function hideArchived(btn) {
+    let allHiddenLi = btn.parentNode.parentNode.querySelectorAll('li.show-0');
+    for (var i = 0; i < allHiddenLi.length; ++i) {
+        removeClass(allHiddenLi[i], 'showAnyway');
+    }
+    document.querySelector('button.showHidden').innerText = 'Visa arkiverade';
+    
 }
 
 function addClass(ele, cls) {

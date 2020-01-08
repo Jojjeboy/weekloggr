@@ -43,12 +43,10 @@ Flight::route('/setstatus/@id/@newStatus', function ($id, $newStatus) {
 
     $sql = 'UPDATE weekloggr SET is_visible = :is_visible WHERE id = :id';
 
-    //print_r($id . '/' . $newStatus); die();
-    
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':is_visible', $newStatus, PDO::PARAM_INT);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $isTrue = $stmt->execute();
+    $stmt->execute();
     
 
     Flight::redirect('/');
