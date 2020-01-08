@@ -11,7 +11,7 @@ function toggleArchived(btn, status) {
     for (var i = 0; i < allHiddenLi.length; ++i) {
         addClass(allHiddenLi[i], 'showAnyway');
     }
-    if(status == 0){
+    if(status == 1){
         document.querySelector('button.showHidden').innerText = 'Göm arkiverade';
     }
     else {
