@@ -50,7 +50,7 @@ Flight::map('archiveold', function ($db) {
 
 Flight::map('setup', function () {
     //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
-    Flight::register('db', 'PDO', array('mysql:host=http://192.168.1.234/;dbname=weekloggr', 'root', 'Lia02014'));
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'Lia02014'));
     return Flight::db();
 });
 
