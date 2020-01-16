@@ -1,8 +1,13 @@
 window.scrollTo(0, document.body.scrollHeight);
 
-function copyToInput(btn, id){
+const appUrl = document.location.href;
+
+function copyToInput(btn, id, update){
     const txt = document.querySelector('.text-' + id).textContent.trim();
     document.querySelector('form input').setAttribute('value', txt);
+    if(update === true){
+        document.querySelector('form').setAttribute('action', appUrl + 'update' + '/' + id);
+    }
 }
 
 

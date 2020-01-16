@@ -27,6 +27,19 @@ Flight::route('/addlog', function () {
     Flight::redirect('/');
 });
 
+Flight::route('/update/@id', function ($id) {
+    if (Flight::request()->method == 'POST') {
+        $db = Flight::setup();   
+        $sql = 'UPDATE weekloggr SET text = :text WHERE id = :id';
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':text', Flight::request()->data->weeklog, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+    Flight::redirect('/');
+});
+
 Flight::route('/delete/@id', function ($id) {
 
     $db = Flight::setup();
@@ -49,8 +62,8 @@ Flight::map('archiveold', function ($db) {
 });
 
 Flight::map('setup', function () {
-    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'jojje', 'Lia02014'));
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
+    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'jojje', 'Lia02014'));
     //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'Wrong_password'));
     return Flight::db();
 });
