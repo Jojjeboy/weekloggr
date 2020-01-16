@@ -7,6 +7,8 @@ function copyToInput(btn, id, update){
     document.querySelector('form input').setAttribute('value', txt);
     if(update === true){
         document.querySelector('form').setAttribute('action', appUrl + 'update' + '/' + id);
+
+        document.querySelector('form input').className += ' warning-border';
     }
 }
 

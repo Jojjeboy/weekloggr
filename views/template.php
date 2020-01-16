@@ -14,7 +14,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/assets/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/assets/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
@@ -26,7 +26,7 @@
 
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/style.css">
 
     <meta name="theme-color" content="#563d7c">
@@ -42,34 +42,44 @@
             $first = true;
             foreach ($weeklogs as $row) {
                 if ($weeknr != $row['weeknr']) {
+                    $weeknr = $row['weeknr'];
                     if ($first == false) {
                         echo '</div></ul>';
                     }
                     echo '<div class="card m-3">';
-                    echo '<ul class="list-group list-group-flush">';
-                    $currWeekClass = $currentWeekNr == $row['weeknr'] ? ' sameAsCurrent' : '';
+                    $currWeekClass = $currentWeekNr == $weeknr ? ' sameAsCurrent' : '';
                     echo '<h6 class="m-2 ml-3' . $currWeekClass . '">'; ?>
-                    Vecka <?php echo $row['weeknr']?>
+                    <a data-toggle="collapse" href="#week<?php echo $row['weeknr'] ?>" role="button" aria-expanded="false" aria-controls="week<?php echo $weeknr ?>">Vecka <?php echo $row['weeknr']; ?>
+                        <svg class="bi bi-chevron-up" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M9.646 6.646a.5.5 0 01.708 0l6 6a.5.5 0 01-.708.708L10 7.707l-5.646 5.647a.5.5 0 01-.708-.708l6-6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+
                     </h6>
-                    <?php
-                    $weeknr = $row['weeknr'];
+                <?php
+                    echo '<ul class="collapse show list-group list-group-flush" id="week' . $weeknr . '">';
+
                     $first = false;
-                } 
+                }
                 ?>
                 <li class="list-group-item">
                     <span class="dropup">
-                        <a class="navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown10">
-                            <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
-                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>, true)">Redigera</button>
-                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
-                        </div>
+                        <a class="navbar-brand active" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg class="bi bi-chevron-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clip-rule="evenodd"></path>
+                            </svg>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdown10">
+                                <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
+                                <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>, true)">Redigera</button>
+                                <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
+                            </div>
                     </span>
-                    <span class="text-<?php echo $row['id']; ?>"> 
+                    <span class="text-<?php echo $row['id']; ?>">
                         <?php echo $row['text']; ?>
                     </span>
                 </li>
-                <?php 
+            <?php
             }
             ?>
         </div>
@@ -97,9 +107,10 @@
     </nav>
 
 
-    <script src="<?php echo $base_url; ?>/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="<?php echo $base_url; ?>/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="<?php echo $base_url; ?>/bootstrap.min.js"></script>
+    <script src="<?php echo $base_url; ?>/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="<?php echo $base_url; ?>/node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="<?php echo $base_url; ?>/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
 
     <script src="<?php echo $base_url; ?>/weeklog.js"></script>
 </body>
