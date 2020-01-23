@@ -69,7 +69,8 @@
                                 <path fill-rule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clip-rule="evenodd"></path>
                             </svg>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdown10">
+                        </a>
+                            <div class="dropdown-menu nisse" aria-labelledby="dropdown10"> 
                                 <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
                                 <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>, true)">Redigera</button>
                                 <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
@@ -110,8 +111,6 @@
     <script src="<?php echo $base_url; ?>/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="<?php echo $base_url; ?>/node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="<?php echo $base_url; ?>/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-
-
     <script src="<?php echo $base_url; ?>/weeklog.js"></script>
 </body>
 
