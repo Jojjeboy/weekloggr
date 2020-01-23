@@ -70,11 +70,11 @@
                             </svg>
 
                         </a>
-                            <div class="dropdown-menu nisse" aria-labelledby="dropdown10"> 
-                                <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
-                                <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>, true)">Redigera</button>
-                                <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
-                            </div>
+                        <div class="dropdown-menu nisse" aria-labelledby="dropdown10">
+                            <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
+                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>, true)">Redigera</button>
+                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
+                        </div>
                     </span>
                     <span class="text-<?php echo $row['id']; ?>">
                         <?php echo $row['text']; ?>
