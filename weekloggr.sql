@@ -68,6 +68,14 @@ COMMIT;
 
 */
 
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Jan 25, 2020 at 05:30 PM
+-- Server version: 5.7.26
+-- PHP Version: 7.3.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -83,10 +91,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `weekloggrTags` (
-  `id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `tag` varchar(255) NOT NULL,
   `weekloggr_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `weekloggrTags`
+--
 
 --
 -- Indexes for dumped tables
@@ -98,6 +110,16 @@ CREATE TABLE `weekloggrTags` (
 ALTER TABLE `weekloggrTags`
   ADD PRIMARY KEY (`id`),
   ADD KEY `weekloggr_id` (`weekloggr_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `weekloggrTags`
+--
+ALTER TABLE `weekloggrTags`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
