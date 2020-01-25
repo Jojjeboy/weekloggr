@@ -18,6 +18,11 @@ Flight::route('/', function () {
     );
 });
 
+Flight::route('/hashtag/@tag', function ($tag) {
+    echo $tag;
+    die();
+});
+
 Flight::route('/addlog', function () {
     if (Flight::request()->method == 'POST') {
         $db = Flight::setup();
