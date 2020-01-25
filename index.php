@@ -4,7 +4,7 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 Flight::route('/', function () {
-    
+    Flight::extractHashTags('Sprintplanering #ers #höndbas');
     $db = Flight::setup();
     //Flight::archiveold($db);
 
@@ -13,7 +13,7 @@ Flight::route('/', function () {
         array(
             'weeklogs' => $x, 
             'base_url' => Flight::get('base_url'),
-            'currentWeekNr' => Flight::getWeekNr()
+            'currentWeekNr' => Flight::getWeekNr(null)
         )
     );
 });
@@ -22,7 +22,7 @@ Flight::route('/addlog', function () {
     if (Flight::request()->method == 'POST') {
         $db = Flight::setup();
         $sql = "INSERT INTO weekloggr (text, weeknr) VALUES (?,?)";
-        $db->prepare($sql)->execute([Flight::request()->data->weeklog, Flight::getWeekNr()]);
+        $db->prepare($sql)->execute([Flight::request()->data->weeklog, Flight::getWeekNr(null)]);
     }
     Flight::redirect('/');
 });
@@ -30,14 +30,18 @@ Flight::route('/addlog', function () {
 Flight::route('/update/@id', function ($id) {
     if (Flight::request()->method == 'POST') {
         $db = Flight::setup();   
-        $sql = 'UPDATE weekloggr SET text = :text WHERE id = :id';
-        
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':text', Flight::request()->data->weeklog, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+        $sql = 'UPDATE weekloggr SET text = ?, date = ?, weeknr = ? WHERE id = ' . $id;
+            
+            //$stmt = $db->prepare($sql);
+        $db->prepare($sql)
+            ->execute([
+            Flight::request()->data->weeklog, 
+            Flight::request()->data->date,
+            Flight::getWeekNr(Flight::request()->data->date)
+            ]);
     }
     Flight::redirect('/');
+    print_r(Flight::request()->data->date); die();
 });
 
 Flight::route('/delete/@id', function ($id) {
@@ -52,6 +56,16 @@ Flight::route('/delete/@id', function ($id) {
     Flight::redirect('/');
 });
 
+Flight::map('extractHashTags', function($string){
+    //$string = 'Tweet #hashtag';
+    $arrayOfTags = [];
+    preg_match_all("/(#\w+)/u", $string, $matches); 
+    var_dump($matches[0]);
+    die();
+    
+    die();
+});
+
 Flight::map('archiveold', function ($db) {
     $sql = 'UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval 30 DAY';
     
@@ -62,19 +76,24 @@ Flight::map('archiveold', function ($db) {
 });
 
 Flight::map('setup', function () {
+    // Mac
     Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
+    
     //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'jojje', 'Lia02014'));
     //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'Wrong_password'));
     return Flight::db();
 });
 
-Flight::map('getWeekNr', function () {
-    $dt = new DateTime();
+Flight::map('getWeekNr', function ($inputDate) {
+    if($inputDate){
+        $dt = new DateTime($inputDate);
+    } else {
+        $dt = new DateTime();
+    }
     $weeknr = $dt->format("W");
     if ($weeknr[0] == "0") {
         $weeknr = $weeknr[1];
     }
-
     return $weeknr;
 });
 

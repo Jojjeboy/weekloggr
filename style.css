@@ -39,6 +39,17 @@ h6.sameAsCurrent{
 form {
     width: 100%;
 }
+form.update input{
+  max-width: 40%;
+  display: inline-block;
+}
+
+form.update input.text{
+  max-width: 75%;
+ }
+ form.update input.dateupdate{
+  max-width: 24%;
+ }
 
 .form-inline .form-control{
     width: 100%;
@@ -86,4 +97,8 @@ h6 svg{
 
 a:hover{
   text-decoration: none;
+}
+
+small.date{
+  line-height: 40px;
 }

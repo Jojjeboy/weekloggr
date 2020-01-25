@@ -74,10 +74,10 @@
                     </span>
                     <span class="text-<?php echo $row['id']; ?>">
                         <?php echo $row['text']; ?>
-                        <small class="float-right">
-                            <?php echo date("D d M Y", strtotime($row['date']));; ?>
-                        </small>
-                    </span>
+                    </span> 
+                    <small class="date date-<?php echo $row['id']; ?> float-right" data-date="<?php echo date("Y-m-d", strtotime($row['date'])) ?>">
+                        <?php echo date("D d M Y", strtotime($row['date'])); ?>
+                    </small>
                 </li>
             <?php
             }
@@ -100,12 +100,12 @@
                 </li>
             </ul>
             <form method="POST" name="addweeklog" action="<?php echo $base_url; ?>/addlog">
-                <input class="form-control" name="weeklog" type="text" placeholder="Log work done">
+                <input class="form-control text" name="weeklog" type="text" placeholder="Log work done">
+                <input class="form-control d-none dateupdate" name="date" type="date"  value="">
                 <button type="submit" class="d-none">Skicka</button>
             </form>
         </div>
     </nav>
-
 
     <script src="<?php echo $base_url; ?>/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="<?php echo $base_url; ?>/node_modules/popper.js/dist/umd/popper.min.js"></script>

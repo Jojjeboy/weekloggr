@@ -60,3 +60,51 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+/**
+
+========================================================================
+
+*/
+
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `weekloggr`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weekloggrTags`
+--
+
+CREATE TABLE `weekloggrTags` (
+  `id` int(11) NOT NULL,
+  `tag` varchar(255) NOT NULL,
+  `weekloggr_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `weekloggrTags`
+--
+ALTER TABLE `weekloggrTags`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `weekloggr_id` (`weekloggr_id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `weekloggrTags`
+--
+ALTER TABLE `weekloggrTags`
+  ADD CONSTRAINT `weekloggrtags_ibfk_1` FOREIGN KEY (`weekloggr_id`) REFERENCES `weekloggr` (`id`) ON DELETE CASCADE;
