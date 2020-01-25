@@ -62,7 +62,7 @@ Flight::map('archiveold', function ($db) {
 });
 
 Flight::map('setup', function () {
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'mysql'));
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
     //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'jojje', 'Lia02014'));
     //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'Wrong_password'));
     return Flight::db();
