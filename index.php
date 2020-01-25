@@ -4,7 +4,7 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 Flight::route('/', function () {
-    Flight::extractHashTags('Sprintplanering #ers #höndbas');
+    //Flight::extractHashTags('Sprintplanering #ers #höndbas');
     $db = Flight::setup();
     //Flight::archiveold($db);
 
@@ -22,7 +22,16 @@ Flight::route('/addlog', function () {
     if (Flight::request()->method == 'POST') {
         $db = Flight::setup();
         $sql = "INSERT INTO weekloggr (text, weeknr) VALUES (?,?)";
-        $db->prepare($sql)->execute([Flight::request()->data->weeklog, Flight::getWeekNr(null)]);
+        $successfullyInserted = $db->prepare($sql)->execute([Flight::request()->data->weeklog, Flight::getWeekNr(null)]);
+        $tags = Flight::extractHashTags(Flight::request()->data->weeklog);
+
+        if(count($tags) > 0 && $successfullyInserted){
+            $id = $db->lastInsertId();
+            foreach ($tags as $tag) {
+                $sql = "INSERT INTO weekloggrTags (tag, weekloggr_id) VALUES (?,?)";
+                $db->prepare($sql)->execute([$tag, $id]);
+            }
+        }
     }
     Flight::redirect('/');
 });
@@ -60,10 +69,7 @@ Flight::map('extractHashTags', function($string){
     //$string = 'Tweet #hashtag';
     $arrayOfTags = [];
     preg_match_all("/(#\w+)/u", $string, $matches); 
-    var_dump($matches[0]);
-    die();
-    
-    die();
+    return $matches[0];
 });
 
 Flight::map('archiveold', function ($db) {

@@ -73,6 +73,8 @@
                         </div>
                     </span>
                     <span class="text-<?php echo $row['id']; ?>">
+                    <?php $row['text'] = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a href="/hashtag/$1">#$1</a>', $row['text']); ?>
+
                         <?php echo $row['text']; ?>
                     </span> 
                     <small class="date date-<?php echo $row['id']; ?> float-right" data-date="<?php echo date("Y-m-d", strtotime($row['date'])) ?>">
