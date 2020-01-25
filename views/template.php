@@ -47,12 +47,9 @@
                         echo '</div></ul>';
                     }
                     echo '<div class="card m-3">';
-                    $currWeekClass = $currentWeekNr == $weeknr ? ' sameAsCurrent' : '';
-                    echo '<h6 class="m-2 ml-3' . $currWeekClass . '">'; ?>
-                    <a data-toggle="collapse" href="#week<?php echo $row['weeknr'] ?>" role="button" aria-expanded="false" aria-controls="week<?php echo $weeknr ?>">Vecka <?php echo $row['weeknr']; ?>
-                        
-                    </a>
-
+                    $currWeekClass = $currentWeekNr == $weeknr ? ' sameAsCurrent' : ''; ?>
+                    <h6 class="m-2 ml-3 <?php echo $currWeekClass;?> ">
+                        <a data-toggle="collapse" href="#week<?php echo $row['weeknr'] ?>" role="button" aria-expanded="false" aria-controls="week<?php echo $weeknr ?>">Vecka <?php echo $row['weeknr']; ?></a>
                     </h6>
                 <?php
                     echo '<ul class="collapse show list-group list-group-flush" id="week' . $weeknr . '">';
@@ -77,6 +74,9 @@
                     </span>
                     <span class="text-<?php echo $row['id']; ?>">
                         <?php echo $row['text']; ?>
+                        <small class="float-right">
+                            <?php echo date("D d M Y", strtotime($row['date']));; ?>
+                        </small>
                     </span>
                 </li>
             <?php
