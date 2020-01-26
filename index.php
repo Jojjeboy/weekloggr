@@ -4,14 +4,10 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 Flight::route('/', function () {
-    //Flight::extractHashTags('Sprintplanering #ers #höndbas');
-    $db = Flight::setup();
-    //Flight::archiveold($db);
-
-    $x = $db->query("SELECT * FROM `weekloggr`")->fetchAll(PDO::FETCH_ASSOC);
+    $logs = Flight::selectData("SELECT * FROM `weekloggr`");
     Flight::render('template.php', 
         array(
-            'weeklogs' => $x, 
+            'weeklogs' => $logs, 
             'base_url' => Flight::get('base_url'),
             'currentWeekNr' => Flight::getWeekNr(null)
         )
@@ -19,8 +15,14 @@ Flight::route('/', function () {
 });
 
 Flight::route('/hashtag/@tag', function ($tag) {
-    echo $tag;
-    die();
+    $logs = Flight::selectData("select * from weekloggr_with_tags wwt where wwt.name = '#$tag'");
+    Flight::render('template.php', 
+        array(
+            'weeklogs' => $logs, 
+            'base_url' => Flight::get('base_url'),
+            'currentWeekNr' => Flight::getWeekNr(null)
+        )
+    );
 });
 
 Flight::route('/addlog', function () {
@@ -29,12 +31,24 @@ Flight::route('/addlog', function () {
         $sql = "INSERT INTO weekloggr (text, weeknr) VALUES (?,?)";
         $successfullyInserted = $db->prepare($sql)->execute([Flight::request()->data->weeklog, Flight::getWeekNr(null)]);
         $tags = Flight::extractHashTags(Flight::request()->data->weeklog);
+        //echo "<pre>"; print_r($tags); die();
 
         if(count($tags) > 0 && $successfullyInserted){
-            $id = $db->lastInsertId();
+            $lastInsertedWeekloggrId = $db->lastInsertId();
             foreach ($tags as $tag) {
-                $sql = "INSERT INTO weekloggrTags (tag, weekloggr_id) VALUES (?,?)";
-                $db->prepare($sql)->execute([$tag, $id]);
+                $tagId = Flight::doesTagExist($tag);
+                if($tagId){
+                    $sql = "INSERT INTO weekloggr_tags (weekloggr_id, tag_id) VALUES (?,?)";
+                    $db->prepare($sql)->execute([$lastInsertedWeekloggrId, $tagId]);
+                }
+                else {
+                    $sql = "INSERT INTO tags (name) VALUES (?)";
+                    $db->prepare($sql)->execute([$tag]);
+                    $lastTagId = $db->lastInsertId();
+
+                    $sql = "INSERT INTO weekloggr_tags (weekloggr_id, tag_id) VALUES (?,?)";
+                    $db->prepare($sql)->execute([$lastInsertedWeekloggrId, $lastTagId]);
+                }
             }
         }
     }
@@ -45,8 +59,7 @@ Flight::route('/update/@id', function ($id) {
     if (Flight::request()->method == 'POST') {
         $db = Flight::setup();   
         $sql = 'UPDATE weekloggr SET text = ?, date = ?, weeknr = ? WHERE id = ' . $id;
-            
-            //$stmt = $db->prepare($sql);
+
         $db->prepare($sql)
             ->execute([
             Flight::request()->data->weeklog, 
@@ -71,8 +84,6 @@ Flight::route('/delete/@id', function ($id) {
 });
 
 Flight::map('extractHashTags', function($string){
-    //$string = 'Tweet #hashtag';
-    $arrayOfTags = [];
     preg_match_all("/(#\w+)/u", $string, $matches); 
     return $matches[0];
 });
@@ -106,6 +117,21 @@ Flight::map('getWeekNr', function ($inputDate) {
         $weeknr = $weeknr[1];
     }
     return $weeknr;
+});
+
+
+Flight::map('selectData', function($sql){
+    $db = Flight::setup();
+    $logs = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    return $logs;
+});
+
+Flight::map('doesTagExist', function($tag){
+    $res = Flight::selectData("select id from tags where name = '$tag'");
+    if(count($res)){
+        return $res[0]['id'];
+    }
+    return null;
 });
 
 
