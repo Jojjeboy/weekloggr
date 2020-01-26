@@ -90,6 +90,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 AS SELECT
    `t`.`name` AS `name`,
    `w`.`id` AS `id`,
+   `t.id` as `tagId`,
    `w`.`text` AS `text`,
    `w`.`date` AS `date`,
    `w`.`weeknr` AS `weeknr`

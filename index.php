@@ -78,8 +78,20 @@ Flight::route('/delete/@id', function ($id) {
     $sql = 'DELETE FROM weekloggr WHERE id = :id';
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
+    $successfullyInserted = $stmt->execute();
 
+    if($successfullyInserted){
+        
+        $sql = 'DELETE FROM weekloggr_tags WHERE weekloggr_id = :id';
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+        $stmt->execute();   
+
+        // Delete orphan tags
+        $sql = 'DELETE FROM tags WHERE tags.id NOT IN (SELECT tag_id FROM `weekloggr_tags`)';
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+    }
     Flight::redirect('/');
 });
 
@@ -127,6 +139,14 @@ Flight::map('selectData', function($sql){
 });
 
 Flight::map('doesTagExist', function($tag){
+    $res = Flight::selectData("select id from tags where name = '$tag'");
+    if(count($res)){
+        return $res[0]['id'];
+    }
+    return null;
+});
+
+Flight::map('isTagOrphan', function($tag){
     $res = Flight::selectData("select id from tags where name = '$tag'");
     if(count($res)){
         return $res[0]['id'];
