@@ -16,6 +16,9 @@ Flight::route('/', function () {
 
 Flight::route('/hashtag/@tag', function ($tag) {
     $logs = Flight::selectData("select * from weekloggr_with_tags wwt where wwt.name = '#$tag'");
+    if(count($logs) < 1){
+        Flight::redirect('/');
+    }
     Flight::render('template.php', 
         array(
             'weeklogs' => $logs, 
@@ -31,7 +34,6 @@ Flight::route('/addlog', function () {
         $sql = "INSERT INTO weekloggr (text, weeknr) VALUES (?,?)";
         $successfullyInserted = $db->prepare($sql)->execute([Flight::request()->data->weeklog, Flight::getWeekNr(null)]);
         $tags = Flight::extractHashTags(Flight::request()->data->weeklog);
-        //echo "<pre>"; print_r($tags); die();
 
         if(count($tags) > 0 && $successfullyInserted){
             $lastInsertedWeekloggrId = $db->lastInsertId();
