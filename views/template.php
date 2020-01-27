@@ -34,9 +34,10 @@
 </head>
 
 <body>
+    
     <div class="container-fluid">
         <div class="mt-1">
-            <h1>Weekloggr</h1>
+            <h1><a href="/">Weekloggr</a></h1>
             <?php
             $weeknr = 0;
             $first = true;
