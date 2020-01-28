@@ -38,6 +38,21 @@ Flight::route('/addlog', function () {
     Flight::redirect('/');
 });
 
+
+Flight::route('/update/@id', function ($id) {
+    if (Flight::request()->method == 'POST') {
+        Flight::delete($id);
+        Flight::create(Flight::request()->data);
+    }
+    Flight::redirect('/');
+});
+
+Flight::route('/delete/@id', function ($id) {
+    Flight::delete($id);
+    Flight::redirect('/');
+});
+
+
 Flight::map('create', function ($requestData) {
     $db = Flight::setup();
     $sql = "INSERT INTO weekloggr (text, weeknr) VALUES (?,?)";
@@ -66,19 +81,6 @@ Flight::map('create', function ($requestData) {
             }
         }
     }
-});
-
-Flight::route('/update/@id', function ($id) {
-    if (Flight::request()->method == 'POST') {
-        Flight::delete($id);
-        Flight::create(Flight::request()->data);
-    }
-    Flight::redirect('/');
-});
-
-Flight::route('/delete/@id', function ($id) {
-    Flight::delete($id);
-    Flight::redirect('/');
 });
 
 Flight::map('delete', function ($id) {
