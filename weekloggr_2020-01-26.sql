@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 27, 2020 at 09:42 PM
+-- Generation Time: Jan 28, 2020 at 01:12 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.8
 
@@ -40,7 +40,8 @@ INSERT INTO `tags` (`id`, `name`) VALUES
 (2, '#handbas'),
 (3, '#php'),
 (13, '#uppdaterad'),
-(14, '#nytag');
+(15, '#uppdaterat'),
+(16, '#nytag');
 
 -- --------------------------------------------------------
 
@@ -51,7 +52,7 @@ INSERT INTO `tags` (`id`, `name`) VALUES
 DROP TABLE IF EXISTS `weekloggr`;
 CREATE TABLE `weekloggr` (
   `id` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date` date NOT NULL,
   `text` text NOT NULL,
   `weeknr` tinyint(2) NOT NULL,
   `is_visible` tinyint(1) NOT NULL DEFAULT '1'
@@ -67,20 +68,21 @@ TRUNCATE TABLE `weekloggr`;
 --
 
 INSERT INTO `weekloggr` (`id`, `date`, `text`, `weeknr`, `is_visible`) VALUES
-(1, '2019-11-14 23:00:00', 'Haft sprintplanneringsmöte', 46, 1),
-(2, '2019-12-09 23:00:00', 'Planerat nästa sprint', 50, 1),
-(4, '2020-01-22 23:00:00', 'Fått svar från EA om MDR och vi förväntas använda valideringstjänsten i dagsläget.', 4, 1),
-(5, '2019-12-24 23:00:00', 'Diskuterat Test strategier med Taif och Ivo', 52, 1),
-(6, '2020-01-02 23:00:00', 'Haft lite kontakt med FMC om hur de gör när de gör beställningar av nya konton\r\n', 1, 1),
-(65, '2020-01-06 20:45:51', 'Logging #php', 2, 1),
-(66, '2020-01-25 16:38:46', 'Testar hashtaggar #ers', 4, 1),
-(68, '2020-01-25 17:10:09', 'ssss #handbas', 4, 1),
-(73, '2020-01-25 17:26:46', 'Nu provar vi med lite hashtags #ers #handbas #php', 4, 1),
-(75, '2020-01-26 14:19:26', 'Prövar med en till #ers tag', 5, 1),
-(81, '2020-01-25 23:00:00', 'En #php tag nu nuuuuu', 4, 1),
-(84, '2019-12-25 23:00:00', 'Testar att uppdatera denna #uppdaterad', 52, 1),
-(85, '2020-01-25 23:00:00', 'Ny Tag #nytag #uppdaterad', 4, 1),
-(86, '2020-01-27 18:00:38', 'testar veckonr', 5, 1);
+(1, '2019-11-15', 'Haft sprintplanneringsmöte', 46, 1),
+(2, '2019-12-10', 'Planerat nästa sprint', 50, 1),
+(4, '2020-01-23', 'Fått svar från EA om MDR och vi förväntas använda valideringstjänsten i dagsläget.', 4, 1),
+(5, '2019-12-25', 'Diskuterat Test strategier med Taif och Ivo', 52, 1),
+(6, '2020-01-03', 'Haft lite kontakt med FMC om hur de gör när de gör beställningar av nya konton\r\n', 1, 1),
+(65, '2020-01-06', 'Logging #php', 2, 1),
+(66, '2020-01-25', 'Testar hashtaggar #ers', 4, 1),
+(73, '2020-01-25', 'Nu provar vi med lite hashtags #ers #handbas #php', 4, 1),
+(75, '2020-01-26', 'Prövar med en till #ers tag', 5, 1),
+(84, '2019-12-26', 'Testar att uppdatera denna #uppdaterad', 52, 1),
+(87, '2020-01-25', 'ssss #handbas #uppdaterat', 4, 1),
+(88, '2020-01-26', 'Ny Tag #nytag #uppdaterat', 4, 1),
+(95, '2020-01-28', 'testar ännu mer #ers eller nudå kaaaanskessss', 5, 1),
+(96, '2020-01-27', 'testar veckonr seeedär jag, tiden var 18.01', 5, 1),
+(98, '2020-01-14', 'En #php tag nu nuuuuu sååååå ändrat till den 14e', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -108,13 +110,15 @@ INSERT INTO `weekloggr_tags` (`id`, `weekloggr_id`, `tag_id`) VALUES
 (1, 66, 1),
 (2, 73, 1),
 (4, 65, 3),
-(5, 68, 2),
 (6, 73, 2),
 (8, 75, 1),
-(14, 81, 3),
 (16, 84, 13),
-(17, 85, 14),
-(18, 85, 13);
+(19, 87, 2),
+(20, 87, 15),
+(21, 88, 16),
+(22, 88, 15),
+(28, 95, 1),
+(30, 98, 3);
 
 -- --------------------------------------------------------
 
@@ -128,7 +132,7 @@ CREATE TABLE `weekloggr_with_tags` (
 ,`id` int(11)
 ,`tagId` int(11) unsigned
 ,`text` text
-,`date` timestamp
+,`date` date
 ,`weeknr` tinyint(2)
 );
 
@@ -172,16 +176,16 @@ ALTER TABLE `weekloggr_tags`
 -- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `weekloggr`
 --
 ALTER TABLE `weekloggr`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `weekloggr_tags`
 --
 ALTER TABLE `weekloggr_tags`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
