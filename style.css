@@ -31,6 +31,9 @@ h1 a {
 .card li{
     background: #fafafa;
 }
+.card li .dropup{
+  display: inline;
+}
 
 .card li.show-0{
   display: none;
@@ -97,11 +100,6 @@ a.dropdown-toggle{
 }
 
 /* https://icons.getbootstrap.com/#install */
-h6 svg{
-  color: #6f6f6f;
-  height: 22px;
-  margin-left: 10px;
-}
 
 a:hover{
   text-decoration: none;
