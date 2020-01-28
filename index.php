@@ -124,11 +124,12 @@ Flight::map('archiveold', function ($db) {
 });
 
 Flight::map('setup', function () {
-    // Mac
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'root'));
+    
+    $pass = strpos(Flight::request()->user_agent, 'Win64') !== false ? 'mysql' : 'root';
+    
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', $pass));        
+    
 
-    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'jojje', 'Lia02014'));
-    //Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', 'Wrong_password'));
     return Flight::db();
 });
 
