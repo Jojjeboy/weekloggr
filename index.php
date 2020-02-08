@@ -94,11 +94,6 @@ Flight::map('delete', function ($id) {
 
     if ($successfullyDeleted) {
 
-        //$sql = 'DELETE FROM weekloggr_tags WHERE weekloggr_id = :id';
-        //$stmt = $db->prepare($sql);
-        //$stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        //$stmt->execute();
-
         // Delete orphan tags
         $sql = 'DELETE FROM tags WHERE tags.id NOT IN (SELECT tags_id FROM `weekloggr_tags`)';
         $stmt = $db->prepare($sql);
