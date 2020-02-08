@@ -60,25 +60,25 @@
                 ?>
                 <li class="list-group-item">
                     <div class="dropup">
-                        <a class="navbar-brand active" href="#" id="dropdown-<?php echo $row['id']; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="navbar-brand active" href="#" id="dropdown-<?php echo $row['weekloggr_id']; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="bi bi-box-arrow-up-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M3.5 15A1.5 1.5 0 005 16.5h8a1.5 1.5 0 001.5-1.5v-4a.5.5 0 00-1 0v4a.5.5 0 01-.5.5H5a.5.5 0 01-.5-.5V7a.5.5 0 01.5-.5h4a.5.5 0 000-1H5A1.5 1.5 0 003.5 7v8zm7-11a.5.5 0 01.5-.5h5a.5.5 0 01.5.5v5a.5.5 0 01-1 0V4.5H11a.5.5 0 01-.5-.5z" clip-rule="evenodd"></path>
                                 <path fill-rule="evenodd" d="M16.354 3.646a.5.5 0 010 .708l-8 8a.5.5 0 01-.708-.708l8-8a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
                             </svg>
 
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown-<?php echo $row['id']; ?>">
-                            <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['id']; ?>">Ta bort</a>
-                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>, true)">Redigera</button>
-                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['id']; ?>)">Kopiera till inmatningsfält</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdown-<?php echo $row['weekloggr_id']; ?>">
+                            <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['weekloggr_id']; ?>">Ta bort</a>
+                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['weekloggr_id']; ?>, true)">Redigera</button>
+                            <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['weekloggr_id']; ?>)">Kopiera till inmatningsfält</button>
                         </div>
                     </div>
-                    <span class="text-<?php echo $row['id']; ?>">
+                    <span class="text-<?php echo $row['weekloggr_id']; ?>">
                         <?php $row['text'] = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a href="/hashtag/$1">#$1</a>', $row['text']); ?>
 
                         <?php echo $row['text']; ?>
                     </span>
-                    <small class="date date-<?php echo $row['id']; ?> float-right" data-date="<?php echo date("Y-m-d", strtotime($row['date'])) ?>">
+                    <small class="date date-<?php echo $row['weekloggr_id']; ?> float-right" data-date="<?php echo date("Y-m-d", strtotime($row['date'])) ?>">
                         <?php echo date("D d M Y", strtotime($row['date'])); ?>
                     </small>
                 </li>

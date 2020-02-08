@@ -17,7 +17,7 @@ Flight::route('/', function () {
 });
 
 Flight::route('/hashtag/@tag', function ($tag) {
-    $logs = Flight::selectData("select * from weekloggr_with_tags wwt where wwt.name = '#$tag'");
+    $logs = Flight::selectData("select * from v_weekloggr_tags vwt where vwt.name = '#$tag'");
     if (count($logs) < 1) {
         Flight::redirect('/');
     }
@@ -55,13 +55,14 @@ Flight::route('/delete/@id', function ($id) {
 
 Flight::map('create', function ($requestData) {
     $db = Flight::setup();
-    $sql = "INSERT INTO weekloggr (text, weeknr) VALUES (?,?)";
-    $arrayOfDBParams = array($requestData->weeklog, Flight::getWeekNr(null));
+    
+    $sql = "INSERT INTO weekloggr (text, weeknr, date) VALUES (?,?,?)";
+    $arrayOfDBParams = array($requestData->weeklog, Flight::getWeekNr(null), date("Y-m-d"));
     if($requestData->date != null){
-        $sql = "INSERT INTO weekloggr (text, weeknr, date) VALUES (?,?,?)";
         $arrayOfDBParams = array($requestData->weeklog, Flight::getWeekNr($requestData->date), $requestData->date);
     }
     $successfullyInserted = $db->prepare($sql)->execute($arrayOfDBParams);
+    
     $tags = Flight::extractHashTags($requestData->weeklog);
 
     if (count($tags) > 0 && $successfullyInserted) {
@@ -69,14 +70,14 @@ Flight::map('create', function ($requestData) {
         foreach ($tags as $tag) {
             $tagId = Flight::doesTagExist($tag);
             if ($tagId) {
-                $sql = "INSERT INTO weekloggr_tags (weekloggr_id, tag_id) VALUES (?,?)";
+                $sql = "INSERT INTO weekloggr_tags (weekloggr_id, tags_id) VALUES (?,?)";
                 $db->prepare($sql)->execute([$lastInsertedWeekloggrId, $tagId]);
             } else {
                 $sql = "INSERT INTO tags (name) VALUES (?)";
                 $db->prepare($sql)->execute([$tag]);
                 $lastTagId = $db->lastInsertId();
 
-                $sql = "INSERT INTO weekloggr_tags (weekloggr_id, tag_id) VALUES (?,?)";
+                $sql = "INSERT INTO weekloggr_tags (weekloggr_id, tags_id) VALUES (?,?)";
                 $db->prepare($sql)->execute([$lastInsertedWeekloggrId, $lastTagId]);
             }
         }
@@ -86,20 +87,20 @@ Flight::map('create', function ($requestData) {
 Flight::map('delete', function ($id) {
     $successfullyDeletedAll = false;
     $db = Flight::setup();
-    $sql = 'DELETE FROM weekloggr WHERE id = :id';
+    $sql = 'DELETE FROM weekloggr WHERE weekloggr_id = :id';
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $successfullyDeleted = $stmt->execute();
 
     if ($successfullyDeleted) {
 
-        $sql = 'DELETE FROM weekloggr_tags WHERE weekloggr_id = :id';
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+        //$sql = 'DELETE FROM weekloggr_tags WHERE weekloggr_id = :id';
+        //$stmt = $db->prepare($sql);
+        //$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        //$stmt->execute();
 
         // Delete orphan tags
-        $sql = 'DELETE FROM tags WHERE tags.id NOT IN (SELECT tag_id FROM `weekloggr_tags`)';
+        $sql = 'DELETE FROM tags WHERE tags.id NOT IN (SELECT tags_id FROM `weekloggr_tags`)';
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
@@ -154,9 +155,9 @@ Flight::map('selectData', function ($sql) {
 });
 
 Flight::map('doesTagExist', function ($tag) {
-    $res = Flight::selectData("select id from tags where name = '$tag'");
+    $res = Flight::selectData("select tags_id from tags where name = '$tag'");
     if (count($res)) {
-        return $res[0]['id'];
+        return $res[0]['tags_id'];
     }
     return null;
 });
