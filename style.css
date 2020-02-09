@@ -108,3 +108,10 @@ a:hover{
 small.date{
   line-height: 40px;
 }
+
+
+/*  SETTINGS sidan */
+
+.form-group.archiveAfter.disabled{
+  opacity: 0.5;
+}

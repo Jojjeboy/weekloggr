@@ -58,7 +58,7 @@
                     $first = false;
                 }
                 ?>
-                <li class="list-group-item">
+                <li class="list-group-item<?php echo $row['is_visible'] == 0 ? ' d-none' : '' ?>">
                     <div class="dropup">
                         <a class="navbar-brand active" href="#" id="dropdown-<?php echo $row['weekloggr_id']; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="bi bi-box-arrow-up-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +99,8 @@
                 <li class="nav-item dropup">
                     <a class="nav-link navbar-brand active dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Weekloggr </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown10">
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item toggle-all d-none" href="#"><small>Visa alla gömda</small></a>
+                        <a class="dropdown-item" href="<?php echo $base_url; ?>/settings">Settings</a>
                     </div>
                 </li>
             </ul>

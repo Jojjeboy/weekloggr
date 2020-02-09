@@ -4,7 +4,10 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 Flight::route('/', function () {
-    
+    if((bool) Flight::getSetting('archiveOld')){
+        $nrOfDaysToArchive = Flight::getSetting('archiveAfter');
+        Flight::archiveold($nrOfDaysToArchive);   
+    }
     $logs = Flight::selectData("SELECT * FROM `weekloggr` order by date");
     Flight::render(
         'template.php',
@@ -52,17 +55,77 @@ Flight::route('/delete/@id', function ($id) {
     Flight::redirect('/');
 });
 
+Flight::route('/settings', function () {
+    $settings = Flight::selectData("select * from settings");
+
+    $archiveOld = false;
+    foreach ($settings as $setting) {
+        if ($setting['key'] === 'archiveOld') {
+            $archiveOld = (bool) $setting['value'];
+        }
+        if ($setting['key'] === 'archiveAfter') {
+            $archiveAfter = $setting['value'];
+        }
+    }
+
+    Flight::render(
+        'settings.php',
+        array(
+            'archiveOld' => $archiveOld,
+            'archiveAfter' => $archiveAfter,
+            'base_url' => Flight::get('base_url')
+        )
+    );
+});
+
+Flight::route('/settings/update', function () {
+    if (Flight::request()->method == 'POST') {
+
+        $db = Flight::setup();
+
+        if (Flight::request()->data->archiveOld != null) {
+            $sql = "UPDATE settings SET value = :value WHERE settings.`key` = 'archiveOld'";
+            $archiveOld = Flight::request()->data->archiveOld;
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':value', $archiveOld, PDO::PARAM_STR);
+            $stmt->execute();
+        }
+        if (Flight::request()->data->archiveAfter) {
+            $sql = "UPDATE settings SET value = :value WHERE settings.`key` = 'archiveAfter'";
+            $archiveAfter = Flight::request()->data->archiveAfter;
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':value', $archiveAfter, PDO::PARAM_STR);
+            $stmt->execute();
+            Flight::archiveold($archiveAfter);
+        }
+    }
+
+    Flight::redirect('/settings');
+});
+
+Flight::map('archiveold', function ($nrOfDaysOffset) {
+    $db = Flight::setup();
+    
+
+    $sql = "UPDATE weekloggr SET is_visible = 1";
+    $sql = "UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval $nrOfDaysOffset DAY";
+
+    $stmt = $db->prepare($sql);
+    $archivedStatus = 0;
+    $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
+    $stmt->execute();
+});
 
 Flight::map('create', function ($requestData) {
     $db = Flight::setup();
-    
+
     $sql = "INSERT INTO weekloggr (text, weeknr, date) VALUES (?,?,?)";
     $arrayOfDBParams = array($requestData->weeklog, Flight::getWeekNr(null), date("Y-m-d"));
-    if($requestData->date != null){
+    if ($requestData->date != null) {
         $arrayOfDBParams = array($requestData->weeklog, Flight::getWeekNr($requestData->date), $requestData->date);
     }
     $successfullyInserted = $db->prepare($sql)->execute($arrayOfDBParams);
-    
+
     $tags = Flight::extractHashTags($requestData->weeklog);
 
     if (count($tags) > 0 && $successfullyInserted) {
@@ -110,21 +173,13 @@ Flight::map('extractHashTags', function ($string) {
     return $matches[0];
 });
 
-Flight::map('archiveold', function ($db) {
-    $sql = 'UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval 30 DAY';
-
-    $stmt = $db->prepare($sql);
-    $archivedStatus = 0;
-    $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
-    $stmt->execute();
-});
 
 Flight::map('setup', function () {
-    
+
     $pass = strpos(Flight::request()->user_agent, 'Win64') !== false ? 'mysql' : 'root';
-    
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', $pass));        
-    
+
+    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', $pass));
+
 
     return Flight::db();
 });
@@ -153,6 +208,15 @@ Flight::map('doesTagExist', function ($tag) {
     $res = Flight::selectData("select tags_id from tags where name = '$tag'");
     if (count($res)) {
         return $res[0]['tags_id'];
+    }
+    return null;
+});
+
+
+Flight::map('getSetting', function ($key) {
+    $res = Flight::selectData("select value from settings WHERE settings.`key` = '$key'");
+    if (count($res)) {
+        return $res[0]['value'];
     }
     return null;
 });

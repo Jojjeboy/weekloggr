@@ -25,6 +25,58 @@ function removeClass(ele, cls) {
         ele.className = ele.className.replace(reg, ' ');
     }
 }
+
 function hasClass(ele, cls) {
     return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
 }
+
+function toggleClass(ele, cls) {
+    if (hasClass(ele, cls)) {
+        removeClass(ele, cls);
+    }
+    else {
+        addClass(ele, cls);
+    }
+}
+
+document.querySelectorAll('input[name="archiveOld"]').forEach(item => {
+    item.addEventListener('click', event => {
+        console.log(item.value);
+        let inputParent = document.querySelector('.archiveAfter');
+        let input = document.querySelector('.archiveAfter input');
+
+        if (!parseInt(item.value)) {
+            addClass(inputParent, 'disabled');
+            input.value = input.getAttribute('data-originalvalue');
+            input.disabled = true;
+        }
+        else {
+            removeClass(inputParent, 'disabled');
+            input.disabled = false;
+        }
+    })
+});
+
+
+document.querySelectorAll('.card').forEach(item => {
+    li = item.lastElementChild.querySelectorAll('li');
+    let allLiIsHidden = true;
+    li.forEach(eachLi => {
+        if(!hasClass(eachLi, 'd-none')){
+            allLiIsHidden = false;
+        }
+    });
+    if(allLiIsHidden){
+        addClass(item, 'd-none');
+        removeClass(document.querySelector('a.toggle-all'), 'd-none');
+    }
+});
+
+document.querySelector('a.toggle-all').addEventListener('click', event => {
+    document.querySelectorAll('.card').forEach(item => {
+        
+        removeClass(item, 'd-none');
+        removeClass(item.querySelector('li'), 'd-none');
+    });
+});
+
