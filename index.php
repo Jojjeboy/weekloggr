@@ -7,6 +7,8 @@ Flight::route('/', function () {
     if((bool) Flight::getSetting('archiveOld')){
         $nrOfDaysToArchive = Flight::getSetting('archiveAfter');
         Flight::archiveold($nrOfDaysToArchive);   
+    } else {
+        Flight::archiveold('none');
     }
     $logs = Flight::selectData("SELECT * FROM `weekloggr` order by date");
     Flight::render(
@@ -104,16 +106,26 @@ Flight::route('/settings/update', function () {
 });
 
 Flight::map('archiveold', function ($nrOfDaysOffset) {
+    
     $db = Flight::setup();
     
 
-    $sql = "UPDATE weekloggr SET is_visible = 1";
-    $sql = "UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval $nrOfDaysOffset DAY";
-
+    $sql = "UPDATE weekloggr SET is_visible = :is_visible";
     $stmt = $db->prepare($sql);
-    $archivedStatus = 0;
+    $archivedStatus = 1;
     $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
     $stmt->execute();
+
+    if($nrOfDaysOffset !== 'none'){
+        $sql = "UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval $nrOfDaysOffset DAY";
+        $stmt = $db->prepare($sql);
+        $archivedStatus = 0;
+        $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+
+
 });
 
 Flight::map('create', function ($requestData) {
