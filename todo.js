@@ -9,10 +9,14 @@ document.querySelectorAll('input[type="checkbox"]').forEach(item => {
   })
 });
 
-document.querySelectorAll('span.float-right.delete').forEach(item => {
+document.querySelectorAll('span.float-right.edit-0').forEach(item => {
   item.addEventListener('click', event => {
     const id = parseInt(item.getAttribute('data-id'));
-    window.location = appUrl + '/todo/delete/' + id;
+    const text = item.parentElement.textContent.trim();
+    document.querySelector('form input').setAttribute('value', text);
+    document.querySelector('form').setAttribute('action', appUrl + '/todo/update/' + id);
+    document.querySelector('form input').className += ' warning-border';
+    //window.location = appUrl + '/todo/delete/' + id;
 
   })
-})
+});

@@ -126,17 +126,22 @@ small.date{
   width: 96%;
 }
 
-.input-group.todo span.edit,
-.input-group.todo span.delete {
+.input-group.todo span.edit-0,
+.input-group.todo span.stick-0,
+.input-group.todo span.unstick-0 {
   cursor: pointer;
 }
 
+.input-group.todo span.stick-0:hover,
+.input-group.todo span.unstick-0:hover {
+  color: darkcyan;
+}
 
-.input-group.todo span.edit:hover {
+.input-group.todo span.edit-0:hover {
   color: darkorange;
 }
 
-.input-group.todo span.delete:hover {
+.input-group.todo span.delete-0:hover {
   color: red;
 }
 

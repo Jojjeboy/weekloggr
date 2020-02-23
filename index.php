@@ -5,7 +5,7 @@ Flight::set('base_url', 'http://' . Flight::request()->host);
 
 
 Flight::route('/', function () {
-    
+
     $todos = Flight::selectData("SELECT * FROM `todo` order by is_sticky desc, status asc, todo_id");
     Flight::render(
         'todo.php',
@@ -18,9 +18,9 @@ Flight::route('/', function () {
 });
 
 Flight::route('/done', function () {
-    if((bool) Flight::getSetting('archiveOld')){
+    if ((bool) Flight::getSetting('archiveOld')) {
         $nrOfDaysToArchive = Flight::getSetting('archiveAfter');
-        Flight::archiveold($nrOfDaysToArchive);   
+        Flight::archiveold($nrOfDaysToArchive);
     } else {
         Flight::archiveold('none');
     }
@@ -69,37 +69,12 @@ Flight::route('/addlog', function () {
     if (Flight::request()->method == 'POST') {
         Flight::create(Flight::request()->data);
     }
-    Flight::redirect('/');
+    Flight::redirect('/done');
 });
 
 Flight::route('/addTodo', function () {
     if (Flight::request()->method == 'POST') {
-        $db = Flight::setup();
-        $todo = Flight::request()->data->todo;
-
-        $sql = "INSERT INTO todo (text) VALUES (?)";
-        $db->prepare($sql)->execute(array($todo));
-
-        $tags = Flight::extractHashTags($todo);
-
-        if (count($tags) > 0) {
-            $lastInsertedTodoId = $db->lastInsertId();
-            foreach ($tags as $tag) {
-                $tagId = Flight::doesTagExist($tag);
-                if ($tagId) {
-                    $sql = "INSERT INTO todo_tags (todo_id, tags_id) VALUES (?,?)";
-                    $db->prepare($sql)->execute([$lastInsertedTodoId, $tagId]);
-                } else {
-                    $sql = "INSERT INTO tags (name) VALUES (?)";
-                    $db->prepare($sql)->execute([$tag]);
-                    $lastTagId = $db->lastInsertId();
-    
-                    $sql = "INSERT INTO todo_tags (todo_id, tags_id) VALUES (?,?)";
-                    $db->prepare($sql)->execute([$lastInsertedTodoId, $lastTagId]);
-                }
-            }
-        }
-        
+        Flight::createtodo(Flight::request()->data);
     }
     Flight::redirect('/');
 });
@@ -113,8 +88,8 @@ Flight::route('/togglestatus/@id/@newstatus', function ($id, $newstatus) {
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':status', $newstatus, PDO::PARAM_INT);
     $successfullyInserted = $stmt->execute();
-    
-    if($successfullyInserted && $newstatus == 1){
+
+    if ($successfullyInserted && $newstatus == 1) {
         $res = Flight::selectData("select text from todo where todo_id = $id");
         $text = null;
         if (count($res)) {
@@ -128,11 +103,32 @@ Flight::route('/togglestatus/@id/@newstatus', function ($id, $newstatus) {
     Flight::redirect('/');
 });
 
+Flight::route('/todo/togglesticky/@id/@newstatus', function ($id, $is_sticky) {
 
-Flight::route('/update/@id', function ($id) {
+    $db = Flight::setup();
+
+    $sql = "UPDATE todo SET is_sticky = :is_sticky WHERE todo.`todo_id` = $id";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':is_sticky', $is_sticky, PDO::PARAM_INT);
+    $stmt->execute();
+
+    Flight::redirect('/');
+});
+
+
+Flight::route('/done/update/@id', function ($id) {
     if (Flight::request()->method == 'POST') {
         Flight::delete($id, 'weekloggr');
         Flight::create(Flight::request()->data);
+    }
+    Flight::redirect('/');
+});
+
+Flight::route('/todo/update/@id', function ($id) {
+    if (Flight::request()->method == 'POST') {
+        Flight::delete($id, 'todo');
+        Flight::createtodo(Flight::request()->data);
     }
     Flight::redirect('/');
 });
@@ -196,25 +192,22 @@ Flight::route('/settings/update', function () {
 });
 
 Flight::map('archiveold', function ($nrOfDaysOffset) {
-    
+
     $db = Flight::setup();
-    
+
     $sql = "UPDATE weekloggr SET is_visible = :is_visible";
     $stmt = $db->prepare($sql);
     $archivedStatus = 1;
     $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
     $stmt->execute();
 
-    if($nrOfDaysOffset !== 'none'){
+    if ($nrOfDaysOffset !== 'none') {
         $sql = "UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval $nrOfDaysOffset DAY";
         $stmt = $db->prepare($sql);
         $archivedStatus = 0;
         $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
         $stmt->execute();
     }
-
-
-
 });
 
 Flight::map('create', function ($requestData) {
@@ -222,7 +215,7 @@ Flight::map('create', function ($requestData) {
 
     $sql = "INSERT INTO weekloggr (text, weeknr, date) VALUES (?,?,?)";
     $arrayOfDBParams = array($requestData->weeklog, Flight::getWeekNr(null), date("Y-m-d"));
-    
+
     if ($requestData->date != null) {
         $arrayOfDBParams = array($requestData->weeklog, Flight::getWeekNr($requestData->date), $requestData->date);
     }
@@ -249,21 +242,50 @@ Flight::map('create', function ($requestData) {
     }
 });
 
+Flight::map('createtodo', function ($requestData) {
+    $db = Flight::setup();
+
+    $todo = $requestData->todo;
+
+    $sql = "INSERT INTO todo (text) VALUES (?)";
+    $db->prepare($sql)->execute(array($todo));
+
+    $tags = Flight::extractHashTags($todo);
+
+    if (count($tags) > 0) {
+        $lastInsertedTodoId = $db->lastInsertId();
+        foreach ($tags as $tag) {
+            $tagId = Flight::doesTagExist($tag);
+            if ($tagId) {
+                $sql = "INSERT INTO todo_tags (todo_id, tags_id) VALUES (?,?)";
+                $db->prepare($sql)->execute([$lastInsertedTodoId, $tagId]);
+            } else {
+                $sql = "INSERT INTO tags (name) VALUES (?)";
+                $db->prepare($sql)->execute([$tag]);
+                $lastTagId = $db->lastInsertId();
+
+                $sql = "INSERT INTO todo_tags (todo_id, tags_id) VALUES (?,?)";
+                $db->prepare($sql)->execute([$lastInsertedTodoId, $lastTagId]);
+            }
+        }
+    }
+});
+
 Flight::map('delete', function ($id, $table) {
     $db = Flight::setup();
-    $sql = 'DELETE FROM `'.$table.'` WHERE '.$table.'_id = :id';
-    
-    $id = (int)$id;
+    $sql = 'DELETE FROM `' . $table . '` WHERE ' . $table . '_id = :id';
+
+    $id = (int) $id;
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $successfullyDeleted = $stmt->execute();
     //echo "<pre>"; print_r($successfullyDeleted); die();
-    
+
     if ($successfullyDeleted) {
 
         // Delete orphan tags
         $sql = 'DELETE FROM tags WHERE `tags_id` NOT IN (SELECT tags_id FROM `weekloggr_tags` UNION SELECT tags_id FROM `todo_tags`)';
-        
+
         $stmt = $db->prepare($sql);
         $stmt->execute();
     }
