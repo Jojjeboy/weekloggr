@@ -4,19 +4,6 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 
-Flight::route('/', function () {
-
-    $todos = Flight::selectData("SELECT * FROM `todo` order by is_sticky desc, status asc, todo_id");
-    Flight::render(
-        'todo.php',
-        array(
-            'todos' => $todos,
-            'base_url' => Flight::get('base_url'),
-            'currentWeekNr' => Flight::getWeekNr(null)
-        )
-    );
-});
-
 Flight::route('/done', function () {
     if ((bool) Flight::getSetting('archiveOld')) {
         $nrOfDaysToArchive = Flight::getSetting('archiveAfter');
@@ -34,6 +21,25 @@ Flight::route('/done', function () {
         )
     );
 });
+
+Flight::route('(/@showAll)', function ($showAll) {
+    
+    if($showAll != null){
+        $todos = Flight::selectData("SELECT * FROM `todo` ORDER by is_sticky desc, status asc, todo_id");
+    } else {
+        $todos = Flight::selectData("SELECT * FROM `todo` WHERE status = 0 ORDER by is_sticky desc, status asc, todo_id");
+    }
+    Flight::render(
+        'todo.php',
+        array(
+            'todos' => $todos,
+            'base_url' => Flight::get('base_url'),
+            'currentWeekNr' => Flight::getWeekNr(null)
+        )
+    );
+});
+
+
 
 Flight::route('/done/hashtag/@tag', function ($tag) {
     $logs = Flight::selectData("select * from v_weekloggr_tags vwt where vwt.name = '#$tag'");
@@ -74,7 +80,11 @@ Flight::route('/addlog', function () {
 
 Flight::route('/addTodo', function () {
     if (Flight::request()->method == 'POST') {
+        if (Flight::request()->data->todo === 'done') {
+            Flight::redirect('/showAll');
+        } 
         Flight::createtodo(Flight::request()->data);
+        
     }
     Flight::redirect('/');
 });
