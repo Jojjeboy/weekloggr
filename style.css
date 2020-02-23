@@ -118,12 +118,26 @@ small.date{
 
 /*  Todo sidan */
 
-.input-group.todo span {
+.input-group.todo > span {
   padding: 10px;
   border: 1px solid #e4e4e4;
   border-left: 0px;
   display: block;
   width: 96%;
+}
+
+.input-group.todo span.edit,
+.input-group.todo span.delete {
+  cursor: pointer;
+}
+
+
+.input-group.todo span.edit:hover {
+  color: darkorange;
+}
+
+.input-group.todo span.delete:hover {
+  color: red;
 }
 
 .todo-status-1{

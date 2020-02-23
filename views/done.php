@@ -37,7 +37,7 @@
 
     <div class="container-fluid">
         <div class="mt-1">
-            <h1><a href="/">Weekloggr</a></h1>
+        <h1><a href="/done">Done</a> &nbsp; <span class="font-weight-lighter">|</span> &nbsp; <a href="/">Todo</a></h1>
             <?php
             $weeknr = 0;
             $first = true;
@@ -68,7 +68,7 @@
 
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdown-<?php echo $row['weekloggr_id']; ?>">
-                            <a class="dropdown-item small warning" href="<?php echo $base_url . '/delete/' . $row['weekloggr_id']; ?>">Ta bort</a>
+                            <a class="dropdown-item small warning" href="<?php echo $base_url . '/done/delete/' . $row['weekloggr_id']; ?>">Ta bort</a>
                             <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['weekloggr_id']; ?>, true)">Redigera</button>
                             <button type="button" class="btn small btn-link copybtn" onclick="copyToInput(this, <?php echo $row['weekloggr_id']; ?>)">Kopiera till inmatningsfält</button>
                         </div>

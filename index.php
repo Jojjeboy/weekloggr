@@ -131,15 +131,20 @@ Flight::route('/togglestatus/@id/@newstatus', function ($id, $newstatus) {
 
 Flight::route('/update/@id', function ($id) {
     if (Flight::request()->method == 'POST') {
-        Flight::delete($id);
+        Flight::delete($id, 'weekloggr');
         Flight::create(Flight::request()->data);
     }
     Flight::redirect('/');
 });
 
-Flight::route('/delete/@id', function ($id) {
-    Flight::delete($id);
+Flight::route('/todo/delete/@id', function ($id) {
+    Flight::delete($id, 'todo');
     Flight::redirect('/');
+});
+
+Flight::route('/done/delete/@id', function ($id) {
+    Flight::delete($id, 'weekloggr');
+    Flight::redirect('/done');
 });
 
 Flight::route('/settings', function () {
@@ -244,25 +249,26 @@ Flight::map('create', function ($requestData) {
     }
 });
 
-Flight::map('delete', function ($id) {
-    $successfullyDeletedAll = false;
+Flight::map('delete', function ($id, $table) {
     $db = Flight::setup();
-    $sql = 'DELETE FROM weekloggr WHERE weekloggr_id = :id';
+    $sql = 'DELETE FROM `'.$table.'` WHERE '.$table.'_id = :id';
+    
+    $id = (int)$id;
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $successfullyDeleted = $stmt->execute();
-
+    //echo "<pre>"; print_r($successfullyDeleted); die();
+    
     if ($successfullyDeleted) {
 
         // Delete orphan tags
-        $sql = 'DELETE FROM tags WHERE tags.id NOT IN (SELECT tags_id FROM `weekloggr_tags`)';
+        $sql = 'DELETE FROM tags WHERE `tags_id` NOT IN (SELECT tags_id FROM `weekloggr_tags` UNION SELECT tags_id FROM `todo_tags`)';
+        
         $stmt = $db->prepare($sql);
         $stmt->execute();
-
-        $successfullyDeletedAll = true;
     }
 
-    return $successfullyDeletedAll;
+    return $successfullyDeleted;
 });
 
 Flight::map('extractHashTags', function ($string) {
