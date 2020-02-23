@@ -3,6 +3,19 @@ require 'flight/Flight.php';
 
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
+Flight::route('/', function () {
+    
+    $todos = Flight::selectData("SELECT * FROM `todo` WHERE status = 0 ORDER by is_sticky desc, status asc, todo_id");
+    
+    Flight::render(
+        'todo.php',
+        array(
+            'todos' => $todos,
+            'base_url' => Flight::get('base_url'),
+            'currentWeekNr' => Flight::getWeekNr(null)
+        )
+    );
+});
 
 Flight::route('/done', function () {
     if ((bool) Flight::getSetting('archiveOld')) {
@@ -22,22 +35,7 @@ Flight::route('/done', function () {
     );
 });
 
-Flight::route('(/@showAll)', function ($showAll) {
-    
-    if($showAll != null){
-        $todos = Flight::selectData("SELECT * FROM `todo` ORDER by is_sticky desc, status asc, todo_id");
-    } else {
-        $todos = Flight::selectData("SELECT * FROM `todo` WHERE status = 0 ORDER by is_sticky desc, status asc, todo_id");
-    }
-    Flight::render(
-        'todo.php',
-        array(
-            'todos' => $todos,
-            'base_url' => Flight::get('base_url'),
-            'currentWeekNr' => Flight::getWeekNr(null)
-        )
-    );
-});
+
 
 
 
