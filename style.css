@@ -115,3 +115,18 @@ small.date{
 .form-group.archiveAfter.disabled{
   opacity: 0.5;
 }
+
+/*  Todo sidan */
+
+.input-group.todo span {
+  padding: 10px;
+  border: 1px solid #e4e4e4;
+  border-left: 0px;
+  display: block;
+  width: 96%;
+}
+
+.todo-status-1{
+  text-decoration: line-through;
+  color: #999;
+}

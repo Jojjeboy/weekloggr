@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <span class="text-<?php echo $row['weekloggr_id']; ?>">
-                        <?php $row['text'] = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a href="/hashtag/$1">#$1</a>', $row['text']); ?>
+                        <?php $row['text'] = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a href="/done/hashtag/$1">#$1</a>', $row['text']); ?>
 
                         <?php echo $row['text']; ?>
                     </span>
