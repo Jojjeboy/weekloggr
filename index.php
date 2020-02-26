@@ -130,7 +130,7 @@ Flight::route('/done/update/@id', function ($id) {
         Flight::delete($id, 'weekloggr');
         Flight::create(Flight::request()->data);
     }
-    Flight::redirect('/');
+    Flight::redirect('/done');
 });
 
 Flight::route('/todo/update/@id', function ($id) {

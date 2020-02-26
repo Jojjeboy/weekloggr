@@ -10,7 +10,7 @@ function copyToInput(btn, id, update) {
     if (update === true) {
         addClass(document.querySelector('form'), 'update');
         removeClass(document.querySelector('.dateupdate'), 'd-none');
-        document.querySelector('form').setAttribute('action', appUrl + '/update' + '/' + id);
+        document.querySelector('form').setAttribute('action', appUrl + '/done/update' + '/' + id);
         document.querySelector('form input').className += ' warning-border';
     }
 }
