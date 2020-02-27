@@ -1,13 +1,14 @@
 <?php
 require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
+require 'logic/common.php';
 require 'renderer.php';
+require 'logic/settings.php';
 
 
 Flight::route('/', function () {
 
     $todos = Flight::selectData("SELECT * FROM `todo` WHERE status = 0 ORDER by is_sticky desc, status asc, todo_id");
-
     Flight::renderTodo($todos);
 });
 
@@ -124,65 +125,9 @@ Flight::route('/done/delete/@id', function ($id) {
     Flight::redirect('/done');
 });
 
-Flight::route('/settings', function () {
-    $settings = Flight::selectData("select * from settings");
 
-    $archiveOld = false;
-    foreach ($settings as $setting) {
-        if ($setting['key'] === 'archiveOld') {
-            $archiveOld = (bool) $setting['value'];
-        }
-        if ($setting['key'] === 'archiveAfter') {
-            $archiveAfter = $setting['value'];
-        }
-    }
 
-    Flight::renderSettings($archiveOld, $archiveAfter);
-});
 
-Flight::route('/settings/update', function () {
-    if (Flight::request()->method == 'POST') {
-
-        $db = Flight::setup();
-
-        if (Flight::request()->data->archiveOld != null) {
-            $sql = "UPDATE settings SET value = :value WHERE settings.`key` = 'archiveOld'";
-            $archiveOld = Flight::request()->data->archiveOld;
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':value', $archiveOld, PDO::PARAM_STR);
-            $stmt->execute();
-        }
-        if (Flight::request()->data->archiveAfter) {
-            $sql = "UPDATE settings SET value = :value WHERE settings.`key` = 'archiveAfter'";
-            $archiveAfter = Flight::request()->data->archiveAfter;
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':value', $archiveAfter, PDO::PARAM_STR);
-            $stmt->execute();
-            Flight::archiveold($archiveAfter);
-        }
-    }
-
-    Flight::redirect('/settings');
-});
-
-Flight::map('archiveold', function ($nrOfDaysOffset) {
-
-    $db = Flight::setup();
-
-    $sql = "UPDATE weekloggr SET is_visible = :is_visible";
-    $stmt = $db->prepare($sql);
-    $archivedStatus = 1;
-    $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
-    $stmt->execute();
-
-    if ($nrOfDaysOffset !== 'none') {
-        $sql = "UPDATE weekloggr SET is_visible = :is_visible WHERE date < now() - interval $nrOfDaysOffset DAY";
-        $stmt = $db->prepare($sql);
-        $archivedStatus = 0;
-        $stmt->bindParam(':is_visible', $archivedStatus, PDO::PARAM_INT);
-        $stmt->execute();
-    }
-});
 
 Flight::map('create', function ($requestData) {
     $db = Flight::setup();
@@ -273,15 +218,7 @@ Flight::map('extractHashTags', function ($string) {
 });
 
 
-Flight::map('setup', function () {
 
-    $pass = strpos(Flight::request()->user_agent, 'Win64') !== false ? 'mysql' : 'root';
-
-    Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=weekloggr', 'root', $pass));
-
-
-    return Flight::db();
-});
 
 Flight::map('getWeekNr', function ($inputDate) {
     if ($inputDate) {
@@ -296,12 +233,6 @@ Flight::map('getWeekNr', function ($inputDate) {
     return $weeknr;
 });
 
-
-Flight::map('selectData', function ($sql) {
-    $db = Flight::setup();
-    $logs = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    return $logs;
-});
 
 Flight::map('doesTagExist', function ($tag) {
     $res = Flight::selectData("select tags_id from tags where name = '$tag'");
