@@ -2,7 +2,7 @@
 require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 require 'logic/common.php';
-require 'renderer.php';
+require 'logic/renderer.php';
 require 'logic/settings.php';
 
 
