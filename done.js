@@ -72,8 +72,8 @@ document.querySelectorAll('.card').forEach(item => {
     }
 });
 
-document.querySelector('a.toggle-all').addEventListener('click', event => {
-    document.querySelectorAll('.card').forEach(item => {
+document.querySelectorAll('.card').forEach(item => {
+    document.querySelector('a.toggle-all').addEventListener('click', event => {
         
         removeClass(item, 'd-none');
         removeClass(item.querySelector('li'), 'd-none');

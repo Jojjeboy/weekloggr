@@ -37,7 +37,7 @@
 
     <div class="container-fluid">
         <div class="mt-1">
-            <h1><a href="/">Todo</a> &nbsp; <span class="font-weight-lighter">|</span> &nbsp; <a href="/done">Done</a></h1>
+            <h1><a href="/">To</a><span class="font-weight-lighter">{do}</span><a href="/done">ne</a></h1>
 
 
             <?php foreach ($todos as $todo) { ?>

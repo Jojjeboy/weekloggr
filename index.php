@@ -4,17 +4,25 @@ require 'flight/Flight.php';
 Flight::set('base_url', 'http://' . Flight::request()->host);
 
 Flight::route('/', function () {
-    
+
     $todos = Flight::selectData("SELECT * FROM `todo` WHERE status = 0 ORDER by is_sticky desc, status asc, todo_id");
-    
-    Flight::render(
-        'todo.php',
+
+    Flight::render('partials/header', 
         array(
+            'heading' => 'Hello', 
+            'base_url' => 'http://' . Flight::request()->host, 
+            'jsfile' => 'todo.js'), 
+        'header_content');
+    Flight::render('pages/todo',
+        array(
+            'body' => 'World',
             'todos' => $todos,
             'base_url' => Flight::get('base_url'),
             'currentWeekNr' => Flight::getWeekNr(null)
-        )
+        ),
+        'body_content'
     );
+    Flight::render('layout', array('title' => 'To {do} ne', 'base_url' => 'http://' . Flight::request()->host));
 });
 
 Flight::route('/done', function () {
@@ -25,14 +33,8 @@ Flight::route('/done', function () {
         Flight::archiveold('none');
     }
     $logs = Flight::selectData("SELECT * FROM `weekloggr` order by date");
-    Flight::render(
-        'done.php',
-        array(
-            'weeklogs' => $logs,
-            'base_url' => Flight::get('base_url'),
-            'currentWeekNr' => Flight::getWeekNr(null)
-        )
-    );
+
+    Flight::renderDone($logs);
 });
 
 
@@ -44,14 +46,26 @@ Flight::route('/done/hashtag/@tag', function ($tag) {
     if (count($logs) < 1) {
         Flight::redirect('/done');
     }
-    Flight::render(
-        'done.php',
+    Flight::renderDone($logs);
+});
+
+Flight::map('renderDone', function($logs){
+    Flight::render('partials/header', 
         array(
+            'heading' => 'Hello', 
+            'base_url' => 'http://' . Flight::request()->host, 
+            'jsfile' => 'done.js'), 
+        'header_content');
+    Flight::render('pages/done',
+        array(
+            'body' => 'World',
             'weeklogs' => $logs,
             'base_url' => Flight::get('base_url'),
             'currentWeekNr' => Flight::getWeekNr(null)
-        )
+        ),
+        'body_content'
     );
+    Flight::render('layout', array('title' => 'To {do} ne', 'base_url' => 'http://' . Flight::request()->host));
 });
 
 Flight::route('/todo/hashtag/@tag', function ($tag) {
@@ -80,9 +94,8 @@ Flight::route('/addTodo', function () {
     if (Flight::request()->method == 'POST') {
         if (Flight::request()->data->todo === 'done') {
             Flight::redirect('/showAll');
-        } 
+        }
         Flight::createtodo(Flight::request()->data);
-        
     }
     Flight::redirect('/');
 });
@@ -164,14 +177,22 @@ Flight::route('/settings', function () {
         }
     }
 
-    Flight::render(
-        'settings.php',
+    Flight::render('partials/header', 
         array(
+            'heading' => 'Hello', 
+            'base_url' => 'http://' . Flight::request()->host, 
+            'jsfile' => 'done.js'), 
+        'header_content');
+    Flight::render('pages/settings',
+        array(
+            'body' => 'World',
             'archiveOld' => $archiveOld,
             'archiveAfter' => $archiveAfter,
             'base_url' => Flight::get('base_url')
-        )
+        ),
+        'body_content'
     );
+    Flight::render('layout', array('title' => 'To {do} ne', 'base_url' => 'http://' . Flight::request()->host));
 });
 
 Flight::route('/settings/update', function () {
