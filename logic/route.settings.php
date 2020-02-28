@@ -1,5 +1,6 @@
 <?php
 
+/* ========== ROUTES =========== */
 
 Flight::route('/settings', function () {
     $settings = Flight::selectData("select * from settings");
@@ -41,6 +42,34 @@ Flight::route('/settings/update', function () {
 
     Flight::redirect('/settings');
 });
+
+/* ========== RENDERER =========== */
+
+Flight::map('renderSettings', function ($archiveOld, $archiveAfter) {
+    Flight::render(
+        'partials/header',
+        array(
+            'heading' => 'Hello',
+            'base_url' => 'http://' . Flight::request()->host,
+            'jsfile' => 'done.js'
+        ),
+        'header_content'
+    );
+    Flight::render(
+        'pages/settings',
+        array(
+            'body' => 'World',
+            'archiveOld' => $archiveOld,
+            'archiveAfter' => $archiveAfter,
+            'base_url' => Flight::get('base_url')
+        ),
+        'body_content'
+    );
+    Flight::render('layout', array('title' => 'To {do} ne', 'base_url' => 'http://' . Flight::request()->host));
+});
+
+
+/* ========== METHODS =========== */
 
 Flight::map('archiveold', function ($nrOfDaysOffset) {
 
