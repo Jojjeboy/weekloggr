@@ -20,3 +20,20 @@ document.querySelectorAll('span.float-right.edit-0').forEach(item => {
 
   })
 });
+
+$('.input-group.todo span').on('contextmenu', function(e) {
+  var top = e.pageY - 50;
+  var left = e.pageX - 40;
+  $("#context-menu").css({
+    display: "block",
+    top: top,
+    left: left
+  }).addClass("show");
+  return false; //blocks default Webbrowser right click menu
+}).on("click", function() {
+  $("#context-menu").removeClass("show").hide();
+});
+
+$("#context-menu a").on("click", function() {
+  $(this).parent().removeClass("show").hide();
+});

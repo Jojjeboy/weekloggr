@@ -3,7 +3,7 @@
 Flight::route('/', function () {
     $todos = Flight::selectData("SELECT * FROM `todo` WHERE status = 0 ORDER by is_sticky desc, status asc, todo_id");
     Flight::renderTodo($todos);
-    Flight::calendar();
+   
 });
 
 Flight::route('/todo/hashtag/@tag', function ($tag) {
