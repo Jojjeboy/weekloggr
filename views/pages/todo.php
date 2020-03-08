@@ -8,7 +8,7 @@
                 <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
                     <?php $toggleStickyStatus = $todo['is_sticky'] ? 0 : 1 ?>
                     <a class="dropdown-item delete-<?php echo $todo['status']; ?>" href="<?php echo $base_url . '/todo/togglesticky/' . $todo['todo_id'] . '/' . $toggleStickyStatus; ?>">Sätt sticky
-                        <svg class="bi bi-arrow-down-left" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="bi bi-arrow-down-left float-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M5 9.5a.5.5 0 01.5.5v4.5H10a.5.5 0 010 1H5a.5.5 0 01-.5-.5v-5a.5.5 0 01.5-.5z" clip-rule="evenodd"></path>
                             <path fill-rule="evenodd" d="M14.354 5.646a.5.5 0 010 .708l-9 9a.5.5 0 01-.708-.708l9-9a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
                         </svg>
@@ -21,8 +21,8 @@
                             </svg>
                         </span>
                     </a>
-                    <a class="dropdown-item delete-<?php echo $todo['status']; ?>" href="<?php echo $base_url . '/todo/delete/' . $todo['todo_id']; ?>">Radera 
-                        <svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <a class="warning dropdown-item delete-<?php echo $todo['status']; ?>" href="<?php echo $base_url . '/todo/delete/' . $todo['todo_id']; ?>">Radera 
+                        <svg class="bi bi-trash float-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 7.5A.5.5 0 018 8v6a.5.5 0 01-1 0V8a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V8a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V8z"></path>
                             <path fill-rule="evenodd" d="M16.5 5a1 1 0 01-1 1H15v9a2 2 0 01-2 2H7a2 2 0 01-2-2V6h-.5a1 1 0 01-1-1V4a1 1 0 011-1H8a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM6.118 6L6 6.059V15a1 1 0 001 1h6a1 1 0 001-1V6.059L13.882 6H6.118zM4.5 5V4h11v1h-11z" clip-rule="evenodd"></path>
                         </svg>
