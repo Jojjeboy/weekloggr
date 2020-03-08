@@ -44,31 +44,6 @@ Flight::route('/done/delete/@id', function ($id) {
     Flight::redirect('/done');
 });
 
-/* ========== RENDERER =========== */
-
-Flight::map('renderDone', function ($logs) {
-    Flight::render(
-        'partials/header',
-        array(
-            'heading' => 'Hello',
-            'base_url' => 'http://' . Flight::request()->host,
-            'jsfile' => 'done.js'
-        ),
-        'header_content'
-    );
-    Flight::render(
-        'pages/done',
-        array(
-            'body' => 'World',
-            'weeklogs' => $logs,
-            'base_url' => Flight::get('base_url'),
-            'currentWeekNr' => Flight::getWeekNr(null)
-        ),
-        'body_content'
-    );
-    Flight::render('layout', array('title' => 'To {do} ne', 'base_url' => 'http://' . Flight::request()->host));
-});
-
 /* ========== METHODS =========== */
 
 Flight::map('getSetting', function ($key) {
@@ -109,4 +84,28 @@ Flight::map('create', function ($requestData) {
             }
         }
     }
+});
+
+/* ========== RENDERER =========== */
+
+Flight::map('renderDone', function ($logs) {
+    Flight::render(
+        'partials/header',
+        array(
+            'heading' => 'To {do} ne',
+            'base_url' => 'http://' . Flight::request()->host,
+            'jsfile' => 'done.js'
+        ),
+        'header_content'
+    );
+    Flight::render(
+        'pages/done',
+        array(
+            'weeklogs' => $logs,
+            'base_url' => Flight::get('base_url'),
+            'currentWeekNr' => Flight::getWeekNr(null)
+        ),
+        'body_content'
+    );
+    Flight::render('layout', array('base_url' => 'http://' . Flight::request()->host));
 });
